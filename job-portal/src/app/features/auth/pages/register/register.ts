@@ -1,0 +1,36 @@
+import { Component, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-register',
+  imports: [],
+  templateUrl: './register.html',
+  styleUrl: './register.css',
+})
+export class Register {
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  registerForm = this.fb.nonNullable.group({
+    name: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+  });
+
+  onSubmit() {
+    if (this.registerForm.invalid) return;
+
+    this.authService.register(this.registerForm.getRawValue()).subscribe({
+      next: (response) => {
+        console.log(response.message);
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+}
