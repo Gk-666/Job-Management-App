@@ -18,8 +18,8 @@ export class AuthService {
     return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, credentials);
   }
 
-  logout(){
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 }
