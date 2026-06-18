@@ -14,25 +14,57 @@ const applicationSchema = new mongoose.Schema(
       required: true,
     },
 
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      required: true,
+    },
+
     skills: [
       {
         type: String,
         required: true,
         trim: true,
+        maxlength:10
       },
     ],
+
+    experience: {
+      type: String,
+      enum: ["FResher", "1", "2", "3", "4", "5"],
+      required: true,
+    },
 
     qualification: {
       type: String,
       required: true,
       trim: true,
-      maxlength: 10,
+      minlength:10,
+      maxlength: 50,
     },
 
     currentLocation: {
       type: String,
       required: true,
       trim: true,
+    },
+
+    relocation: {
+      type: Boolean,
+      required: true,
+    },
+
+    workMode: {
+      type: String,
+      enum: ["remote", "on-site", "hybrid"],
+      required: true,
+    },
+
+    coverLetter: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 150,
     },
 
     mobileNumber: {

@@ -3,9 +3,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { firstName,lastName, email, password } = req.body;
 
-  if (!name || !email || !password) {
+  if (!firstName || !lastName || !email || !password) {
     return res.status(400).json({
       message: "All fields are required...",
     });
@@ -25,7 +25,8 @@ const register = async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      name,
+      firstName,
+      lastName,
       email,
       password: hash,
     });
@@ -33,8 +34,9 @@ const register = async (req, res) => {
     return res.status(201).json({
       message: "User created Successfully",
       user: {
-        id: newUser._id,
-        name: newUser.name,
+        _id: newUser._id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
         email: newUser.email,
         role: newUser.role
       },
@@ -64,6 +66,7 @@ const login = async (req, res) => {
       });
     }
 
+
     const validPassword = await bcrypt.compare(password, validUser.password);
 
     if (!validPassword) {
@@ -79,9 +82,10 @@ const login = async (req, res) => {
     return res.status(200).json({
       message: "Login successful",
       token,
-      user: {
-        id: validUser._id,
-        name: validUser.name,
+      user: { 
+        _id: validUser._id,
+        firstName:validUser.firstName,
+        lastName:validUser.lastName,
         email: validUser.email,
         role: validUser.role,
       },

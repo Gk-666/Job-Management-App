@@ -5,7 +5,8 @@ const { uploadFile } = require("../services/storage.service");
 
 const createJobApplication = async (req, res) => {
   const { jobId } = req.params;
-  const { skills, qualification, currentLocation, mobileNumber } = req.body;
+  const { qualification, gender, currentLocation, mobileNumber } = req.body;
+  const skills = JSON.parse(req.body.skills);
 
   const resume = req.file;
 
@@ -57,17 +58,21 @@ const createJobApplication = async (req, res) => {
     const newApplication = await Application.create({
       applicant: req.user._id,
       job: jobId,
+      gender,
+      experience,
       skills,
       qualification,
       currentLocation,
+      workMode,
+      relocation,
+      coverLetter,
       mobileNumber,
       resumeUrl: uploadedResume.url,
     });
 
     return res.status(201).json({
-      message: "Application for job is successful.",
-      application: newApplication,
-      resume: req.file,
+      message: "Application for job is successfully submitted.",
+      application: newApplication._id,
     });
   } catch (error) {
     return res.status(500).json({

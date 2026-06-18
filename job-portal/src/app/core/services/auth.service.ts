@@ -11,11 +11,11 @@ export class AuthService {
   private http = inject(HttpClient);
 
   login(credentials: LoginRequest) {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials);
+    return this.http.post<LoginResponse>(`${this.apiUrl}login`, credentials);
   }
 
   register(credentials: RegisterRequest) {
-    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, credentials);
+    return this.http.post<RegisterResponse>(`${this.apiUrl}register`, credentials);
   }
 
   logout() {

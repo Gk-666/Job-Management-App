@@ -18,3 +18,9 @@ export interface RegisterResponse {
   message: string;
   user: User;
 }
+
+export interface ApplicationResponse { 
+  message: string;
+  application : string;
+  resume : Object
+}
