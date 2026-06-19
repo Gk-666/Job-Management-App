@@ -1,3 +1,4 @@
+import { MyApplication } from './application.model';
 import { Job } from './job.model';
 import { User } from './user.model';
 
@@ -19,8 +20,12 @@ export interface RegisterResponse {
   user: User;
 }
 
-export interface ApplicationResponse { 
+export interface CreateApplicationResponse {
   message: string;
-  application : string;
-  resume : Object
+  application: string;
+}
+
+export interface GetApplicationRespose {
+  message: string;
+  applications: MyApplication;
 }

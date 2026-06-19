@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ApplicationResponse } from '../models/api-responses';
+import { CreateApplicationResponse } from '../models/api-responses';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +8,8 @@ import { ApplicationResponse } from '../models/api-responses';
 export class ApplicationService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:5000/api/application';
+  
   applyForJob(jobId: String | null, formData: FormData) {
-    return this.http.post<ApplicationResponse>(`${this.apiUrl}/${jobId}`, formData);
+    return this.http.post<CreateApplicationResponse>(`${this.apiUrl}/${jobId}`, formData);
   }
 }

@@ -1,1 +1,180 @@
-<p>application-form works!</p>
+<div class="min-h-screen bg-gray-100 py-10">
+  <h1 class="text-center mb-4 font-semibold text-3xl">Job Application</h1>
+  <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-7">
+    <form [formGroup]="applicationForm" class="flex flex-col space-y-3">
+      <h2 class="text-xl font-bold border-b pb-2">Personal info</h2>
+      <section
+        formGroupName="personalInfo"
+        class="personalInfo grid grid-cols-1 md:grid-cols-2 gap-4 space-y-3 font-medium text-gray-700 border border-gray-200 rounded-xl p-6 space-y-4"
+      >
+        <div class="flex flex-col gap-2">
+          <label for="firstName">First Name : </label>
+          <input
+            readonly
+            class="bg-gray-100 border rounded-lg p-2 text-gray-600 cursor-not-allowed"
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="lastName">Last Name : </label>
+          <input
+            readonly
+            class="bg-gray-100 border rounded-lg p-2 text-gray-600 cursor-not-allowed"
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="mobileNumber">Mobile No : </label>
+          <input
+            class="border p-1 rounded-lg p-2"
+            type="text"
+            id="mobileNumber"
+            formControlName="mobileNumber"
+            minlength="10"
+            maxlength="10"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="email">Email : </label>
+          <input class="border p-1 rounded-lg p-2" type="text" id="email" formControlName="email" readonly />
+        </div>
+        <div class="flex gap-6 items-center">
+          <label for="gender">Gender : </label>
+          <label class="flex gap-2" for="male"
+            >Male <input type="radio" id="male" value="male" formControlName="gender" class="mt-1"
+          /></label>
+          <label class="flex gap-2" for="female"
+            >Female
+            <input type="radio" id="female" value="female" formControlName="gender" class="mt-1"
+          /></label>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="location">Current Location : </label>
+          <input
+            class="border p-1 rounded-lg p-2"
+            type="text"
+            id="location"
+            formControlName="currentLocation"
+          />
+        </div>
+      </section>
+      <h2 class="text-xl font-bold border-b pb-2">Professional info</h2>
+      <section
+        formGroupName="professionalInfo"
+        class="professionalInfo flex flex-col gap-4 font-medium text-gray-700 border border-gray-200 rounded-xl p-6 space-y-4"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="">Qualification : </label>
+            <input class="border rounded-lg p-2" type="text" formControlName="qualification" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="exp">Experience : </label>
+            <select name="" id="exp" class="border rounded-lg p-2" formControlName="experience">
+              <option value="fresher">Fresher</option>
+              <option value="1">1 yr</option>
+              <option value="2">2 yrs</option>
+              <option value="3">3 yrs</option>
+              <option value="4">4 yrs</option>
+              <option value="5">5+ yrs</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <label>Skills : </label>
+          <div formArrayName="skills" class="grid grid-cols-3 gap-2 items-center">
+            @for (control of skills.controls; track control) {
+              <div class="flex items-center gap-2 border rounded-lg p-2">
+                <input class="outline-none" maxlength="10" type="text" [formControlName]="$index" />
+                <button
+                  type="button"
+                  class="text-xl text-red-400 font-bold cursor-pointer"
+                  (click)="removeSkill($index)"
+                >
+                  &times;
+                </button>
+              </div>
+            }
+            <button
+              type="button"
+              class="bg-purple-500 p-1 mr-1 text-white rounded font-semibold h-fit"
+              (click)="addSkill()"
+            >
+              + Add skill
+            </button>
+          </div>
+        </div>
+      </section>
+      <h2 class="text-xl font-bold border-b pb-2">Preferences</h2>
+      <section
+        formGroupName="preferences"
+        class="preferences grid grid-cols-1 md:grid-cols-2 items-center gap-4 font-medium text-gray-700 border border-gray-200 rounded-xl p-6"
+      >
+        <div class="flex gap-2 itmes-center">
+          <label for="relocation">Willing to relocate ? </label>
+          <input
+            type="checkbox"
+            id="relocation"
+            formControlName="relocation"
+            class="h-4 w-4 mt-1"
+          />
+        </div>
+        <div class="flex gap-4 w-fit items-center">
+          <label for="">Work Mode : </label>
+          <label class="flex gap-2" for="remote"
+            >Remote
+            <input type="radio" id="remote" value="remote" formControlName="workMode" class="mt-1"
+          /></label>
+          <label for="on-site" class="flex gap-2"
+            >On-site
+            <input
+              type="radio"
+              id="on-site"
+              value="on-site"
+              class="mt-1"
+              formControlName="workMode"
+          /></label>
+          <label for="hybrid" class="flex gap-2"
+            >Hybrid
+            <input type="radio" id="hybrid" value="hybrid" formControlName="workMode" class="mt-1"
+          /></label>
+        </div>
+      </section>
+      <h2 class="text-xl font-bold border-b pb-2">Details</h2>
+      <section
+        class="preferences grid grid-cols-1 md:grid-cols-2 items-center gap-4 font-medium text-gray-700 border border-gray-200 rounded-xl p-6"
+        formGroupName="applicationDetails"
+      >
+        <label class="flex flex-col gap-2" for="resume"
+          >Resume : <input type="file" class="border p-2" (input)="onSelectedFile($event.target)"
+        /></label>
+        <label class="flex flex-col gap-2" for="coverletter">
+          Cover Letter :
+          <textarea
+            id="coverletter"
+            class="border border-gray-400 rounded p-2 outline-none w-full"
+            placeholder="Tell us about yourself in few words..."
+            maxlength="200"
+            formControlName="coverLetter"
+          ></textarea>
+        </label>
+        <label for="terms"
+          ><input type="checkbox" id="terms" /> I, hereby consent that i have read and agreed to all
+          the terms and conditions written in the documents.</label
+        >
+        <button
+          type="submit"
+          class="bg-purple-600 p-2 rounded-lg text-white focus:ring-2 focus:ring-purple-400 transition"
+          (click)="onSubmit()"
+        >
+          Submit
+        </button>
+      </section>
+    </form>
+  </div>
+</div>

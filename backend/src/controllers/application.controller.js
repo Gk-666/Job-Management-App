@@ -2,15 +2,33 @@ const mongoose = require("mongoose");
 const Application = require("../models/application.model");
 const Job = require("../models/job.model");
 const { uploadFile } = require("../services/storage.service");
+const User = require("../models/user.model");
 
 const createJobApplication = async (req, res) => {
   const { jobId } = req.params;
-  const { qualification, gender, currentLocation, mobileNumber } = req.body;
+
+  const {
+    mobileNumber,
+    gender,
+    currentLocation,
+    qualification,
+    experience,
+    workMode,
+    relocation,
+    coverLetter,
+  } = req.body;
+
   const skills = JSON.parse(req.body.skills);
 
   const resume = req.file;
 
-  console.log("Multer resume file...olala : ", resume);
+  const user = await User.findById(req.user._id);
+
+  if(!user){
+    return res.status(400).json({
+      message:"Missing user details."
+    })
+  }
 
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
     return res.status(400).json({
@@ -49,32 +67,38 @@ const createJobApplication = async (req, res) => {
 
     if (existingApplication) {
       return res.status(409).json({
-        message: "Already Applied for the job.",
+        message: "Already applied for the job.",
       });
     }
 
-    const uploadedResume = await uploadFile(file.buffer.toString("base64"));
+    const uploadedResume = await uploadFile(resume.buffer.toString("base64"));
 
-    const newApplication = await Application.create({
-      applicant: req.user._id,
-      job: jobId,
-      gender,
-      experience,
-      skills,
-      qualification,
-      currentLocation,
-      workMode,
-      relocation,
-      coverLetter,
-      mobileNumber,
-      resumeUrl: uploadedResume.url,
-    });
+
+
+    const newApplication = await Application.create(
+      {
+        applicant: req.user._id,
+        job: jobId,
+        gender,
+        experience,
+        skills,
+        qualification,
+        currentLocation,
+        contactEmail: user.email,
+        workMode,
+        relocation,
+        coverLetter,
+        mobileNumber,
+        resumeUrl: uploadedResume.url,
+      }
+    );
 
     return res.status(201).json({
       message: "Application for job is successfully submitted.",
       application: newApplication._id,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "Failed to submit application.",
       error: error.message,

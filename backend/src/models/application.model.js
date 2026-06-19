@@ -20,14 +20,34 @@ const applicationSchema = new mongoose.Schema(
       required: true,
     },
 
+    mobileNumber: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 10,
+      maxlength: 10,
+    },
+
+    contactEmail: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
     skills: [
       {
         type: String,
         required: true,
         trim: true,
-        maxlength:10
+        maxlength: 10,
       },
     ],
+
+    currentLocation: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
     experience: {
       type: String,
@@ -39,14 +59,8 @@ const applicationSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      minlength:10,
+      minlength: 10,
       maxlength: 50,
-    },
-
-    currentLocation: {
-      type: String,
-      required: true,
-      trim: true,
     },
 
     relocation: {
@@ -65,14 +79,6 @@ const applicationSchema = new mongoose.Schema(
       required: true,
       trim: true,
       maxlength: 150,
-    },
-
-    mobileNumber: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 10,
-      maxlength: 10,
     },
 
     resumeUrl: {
