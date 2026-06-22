@@ -3,11 +3,11 @@ export interface Job {
   title: string;
   company: string;
   location: string;
-  salary?: string;
+  salary: string;
   description: string;
   skillsRequired: string[];
   status: 'Open' | 'Close';
   createdBy: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }

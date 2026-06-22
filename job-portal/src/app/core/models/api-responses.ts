@@ -25,7 +25,8 @@ export interface CreateApplicationResponse {
   application: string;
 }
 
-export interface GetApplicationRespose {
+export interface GetApplicationResponse {
   message: string;
-  applications: MyApplication;
+  applications: MyApplication[];
 }
+

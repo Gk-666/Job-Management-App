@@ -1,1 +1,69 @@
-<p>my-applications works!</p>
+<div class="min-h-screen bg-gray-100 py-10">
+  <div class="max-w-5xl mx-auto px-4">
+    <h1 class="text-3xl font-bold text-center mb-8">My Applications</h1>
+
+    @if (isLoading) {
+      <div class="text-center text-gray-600">Loading applications...</div>
+    }
+
+    @if (errorMessage) {
+      <div class="bg-red-100 border border-red-300 text-red-700 p-4 rounded-lg text-center">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (!isLoading && !errorMessage && applications.length === 0) {
+      <div class="bg-white rounded-xl shadow-md p-8 text-center">
+        <h2 class="text-xl font-semibold mb-2">No applications found</h2>
+
+        <p class="text-gray-600 mb-4">You haven't applied for any jobs yet.</p>
+
+        <a routerLink="/jobs" class="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg">
+          Browse Jobs
+        </a>
+      </div>
+    }
+
+    @if (applications.length > 0) {
+      <div class="grid grid-cols-2 gap-6">
+        @for (application of applications; track application._id) {
+          <div class="bg-white rounded-xl shadow-md border border-gray-200 p-6">
+            <div class="flex justify-between items-start">
+              <div>
+                <h2 class="text-xl font-semibold">
+                  {{ application.job.title }}
+                </h2>
+
+                <p class="text-gray-600">
+                  {{ application.job.company }}
+                </p>
+              </div>
+              <span
+                class="px-3 py-1 rounded-full text-sm font-semibold"
+                [class.bg-yellow-100]="application.status === 'Pending'"
+                [class.text-yellow-700]="application.status === 'Pending'"
+                [class.bg-blue-100]="application.status === 'Reviewed'"
+                [class.text-blue-700]="application.status === 'Reviewed'"
+                [class.bg-green-100]="application.status === 'Shortlisted'"
+                [class.text-green-700]="application.status === 'Shortlisted'"
+                [class.bg-red-100]="application.status === 'Rejected'"
+                [class.text-red-700]="application.status === 'Rejected'"
+              >
+                {{ application.status }}
+              </span>
+            </div>
+
+            <div class="mt-4 space-y-2 text-gray-700">
+              <p>📍 {{ application.job.location }}</p>
+
+              <p>
+                📅 Applied on
+                {{ application.createdAt | date: 'mediumDate' }}
+              </p>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

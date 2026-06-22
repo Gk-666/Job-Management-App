@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { JobService } from '../../../../core/services/job.service';
 import { Job } from '../../../../core/models/job.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NonNullAssert } from '@angular/compiler';
 
 @Component({
   selector: 'app-job-details',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './job-details.html',
   styleUrl: './job-details.css',
 })
