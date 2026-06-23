@@ -3,35 +3,35 @@
     <div class="bg-white rounded-xl shadow-lg p-8">
       <div class="border-b pb-4 mb-6">
         <h1 class="text-3xl font-bold">
-          {{ job?.title }}
+          {{ job()?.title }}
         </h1>
 
         <p class="text-gray-600 mt-2">
-          {{ job?.company }}
+          {{ job()?.company }}
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div class="bg-gray-50 rounded-lg p-4">
           <p class="text-sm text-gray-500">Location</p>
-          <p class="font-semibold">{{ job?.location }}</p>
+          <p class="font-semibold">{{ job()?.location }}</p>
         </div>
 
         <div class="bg-gray-50 rounded-lg p-4">
           <p class="text-sm text-gray-500">Salary</p>
-          <p class="font-semibold">₹{{ job?.salary }}</p>
+          <p class="font-semibold">₹{{ job()?.salary }}</p>
         </div>
 
         <div class="bg-gray-50 rounded-lg p-4">
           <p class="text-sm text-gray-500">Job status</p>
           <p
             class="font-semibold px-3 py-1 rounded-full w-fit mt-1"
-            [class.bg-red-100]="job?.status === 'Close'"
-            [class.text-red-700]="job?.status === 'Close'"
-            [class.bg-green-100]="job?.status === 'Open'"
-            [class.text-green-700]="job?.status === 'Open'"
+            [class.bg-red-100]="job()?.status === 'Close'"
+            [class.text-red-700]="job()?.status === 'Close'"
+            [class.bg-green-100]="job()?.status === 'Open'"
+            [class.text-green-700]="job()?.status === 'Open'"
           >
-            {{ job?.status }}
+            {{ job()?.status }}
           </p>
         </div>
       </div>
@@ -40,7 +40,7 @@
         <h2 class="text-xl font-semibold mb-3">Job Description</h2>
 
         <p class="text-gray-700 leading-relaxed">
-          {{ job?.description }}
+          {{ job()?.description }}
         </p>
       </div>
 
@@ -48,7 +48,7 @@
         <h2 class="text-xl font-semibold mb-3">Required Skills</h2>
 
         <div class="flex flex-wrap gap-2">
-          @for (skill of job?.skillsRequired; track skill) {
+          @for (skill of job()?.skillsRequired; track skill) {
             <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
               {{ skill }}
             </span>
@@ -58,8 +58,8 @@
 
       <button
         class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition font-semibold"
-        [routerLink]="['/jobs', job?._id, 'apply']"
-        [hidden]="job?.status === 'Close'"
+        [routerLink]="['/jobs', job()?._id, 'apply']"
+        [hidden]="job()?.status === 'Close'"
       >
         Apply Now
       </button>

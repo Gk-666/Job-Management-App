@@ -8,6 +8,7 @@ const {
   getApplicationsForJob,
   updateApplicationStatus,
   createJobApplication,
+  getApplicationById,
 } = require("../controllers/application.controller");
 
 router.post(
@@ -25,13 +26,15 @@ router.get(
   getMyApplications,
 );
 
+router.get("/:jobId", protect, authorizeRoles("admin"), getApplicationsForJob);
+
+router.get("/:id/details", protect, authorizeRoles("admin"), getApplicationById);
+
 router.get(
-  "/applications/job/:jobId",
+  "/:id/status",
   protect,
   authorizeRoles("admin"),
-  getApplicationsForJob,
+  updateApplicationStatus,
 );
-
-router.get("/:id/status", protect, updateApplicationStatus);
 
 module.exports = router;

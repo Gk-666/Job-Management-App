@@ -4,7 +4,7 @@ import { ApplicationForm } from '../../components/application-form/application-f
 
 @Component({
   selector: 'app-apply-job',
-  imports: [RouterOutlet, ApplicationForm],
+  imports: [ApplicationForm],
   templateUrl: './apply-job.html',
   styleUrl: './apply-job.css',
 })

@@ -1,0 +1,174 @@
+<div class="min-h-screen bg-gray-100 py-10">
+  <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-8">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">Application Review</h1>
+
+      <span
+        class="px-4 py-2 rounded-full text-sm font-semibold"
+        [ngClass]="{
+          'bg-yellow-100 text-yellow-700': application()?.status === 'Pending',
+          'bg-blue-100 text-blue-700': application()?.status === 'Reviewed',
+          'bg-green-100 text-green-700': application()?.status === 'Shortlisted',
+          'bg-red-100 text-red-700': application()?.status === 'Rejected',
+        }"
+      >
+        {{ application()?.status }}
+      </span>
+    </div>
+
+    <!-- Personal Information -->
+
+    <section class="border border-gray-200 rounded-xl p-6 mb-6">
+      <h2 class="text-xl font-semibold border-b pb-2 mb-4">Personal Information</h2>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-500">Name</p>
+          <p class="font-medium">
+            {{ application()?.applicant?.firstName }}
+            {{ application()?.applicant?.lastName }}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Email</p>
+          <p class="font-medium">
+            {{ application()?.contactEmail }}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Mobile Number</p>
+          <p class="font-medium">
+            {{ application()?.mobileNumber }}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Gender</p>
+          <p class="font-medium">
+            {{ application()?.gender }}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Current Location</p>
+          <p class="font-medium">
+            {{ application()?.currentLocation }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Professional Information -->
+
+    <section class="border border-gray-200 rounded-xl p-6 mb-6">
+      <h2 class="text-xl font-semibold border-b pb-2 mb-4">Professional Information</h2>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-500">Qualification</p>
+          <p class="font-medium">
+            {{ application()?.qualification }}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Experience</p>
+          <p class="font-medium">
+            {{
+              application()?.experience === '1'
+                ? application()?.experience + ' yr'
+                : application()?.experience + ' yrs'
+            }}
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <p class="text-sm text-gray-500 mb-2">Skills</p>
+
+        <div class="flex flex-wrap gap-2">
+          @for (skill of application()?.skills; track skill) {
+            <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
+              {{ skill }}
+            </span>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Preferences -->
+
+    <section class="border border-gray-200 rounded-xl p-6 mb-6">
+      <h2 class="text-xl font-semibold border-b pb-2 mb-4">Preferences</h2>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-500">Work Mode</p>
+          <p class="font-medium">
+            {{ application()?.workMode }}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Relocation</p>
+          <p class="font-medium">
+            {{ application()?.relocation ? 'Yes' : 'No' }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cover Letter -->
+
+    <section class="border border-gray-200 rounded-xl p-6 mb-6">
+      <h2 class="text-xl font-semibold border-b pb-2 mb-4">Cover Letter</h2>
+
+      <p class="leading-relaxed text-gray-700">
+        {{ application()?.coverLetter }}
+      </p>
+    </section>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Resume -->
+
+      <section class="border border-gray-200 rounded-xl p-6">
+        <h2 class="text-xl font-semibold border-b pb-2 mb-4">Resume</h2>
+
+        <a
+          [href]="application()?.resumeUrl"
+          target="_blank"
+          class="inline-block bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+        >
+          View Resume
+        </a>
+      </section>
+
+      <!-- Status Update -->
+
+      <section class="border border-gray-200 rounded-xl p-6">
+        <h2 class="text-xl font-semibold border-b pb-2 mb-4">Update Status</h2>
+
+        <div class="flex flex-col md:flex-row gap-4">
+          <select [(ngModel)]="selectedStatus" class="border rounded-lg p-2">
+            <option value="Pending">Pending</option>
+
+            <option value="Reviewed">Reviewed</option>
+
+            <option value="Shortlisted">Shortlisted</option>
+
+            <option value="Rejected">Rejected</option>
+          </select>
+
+          <button
+            type="button"
+            class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700"
+          >
+            Update Status
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

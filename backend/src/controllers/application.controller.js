@@ -24,10 +24,10 @@ const createJobApplication = async (req, res) => {
 
   const user = await User.findById(req.user._id);
 
-  if(!user){
+  if (!user) {
     return res.status(400).json({
-      message:"Missing user details."
-    })
+      message: "User not found try logging in again.",
+    });
   }
 
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
@@ -36,7 +36,17 @@ const createJobApplication = async (req, res) => {
     });
   }
 
-  if (!qualification || !currentLocation || !mobileNumber || !resume) {
+  if (
+    !qualification ||
+    !currentLocation ||
+    !mobileNumber ||
+    !resume ||
+    !workMode ||
+    !relocation ||
+    !experience ||
+    !gender ||
+    !coverLetter
+  ) {
     return res.status(400).json({
       message: "All fields are required.",
     });
@@ -73,32 +83,28 @@ const createJobApplication = async (req, res) => {
 
     const uploadedResume = await uploadFile(resume.buffer.toString("base64"));
 
-
-
-    const newApplication = await Application.create(
-      {
-        applicant: req.user._id,
-        job: jobId,
-        gender,
-        experience,
-        skills,
-        qualification,
-        currentLocation,
-        contactEmail: user.email,
-        workMode,
-        relocation,
-        coverLetter,
-        mobileNumber,
-        resumeUrl: uploadedResume.url,
-      }
-    );
+    const newApplication = await Application.create({
+      applicant: req.user._id,
+      job: jobId,
+      gender,
+      experience,
+      skills,
+      qualification,
+      currentLocation,
+      contactEmail: user.email,
+      workMode,
+      relocation,
+      coverLetter,
+      mobileNumber,
+      resumeUrl: uploadedResume.url,
+    });
 
     return res.status(201).json({
       message: "Application for job is successfully submitted.",
       application: newApplication._id,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
       message: "Failed to submit application.",
       error: error.message,
@@ -141,11 +147,20 @@ const getApplicationsForJob = async (req, res) => {
     });
   }
 
+  const job = await Job.findById(jobId);
+
+  if (!job) {
+    return res.status(404).json({
+      message: "Job not found.",
+    });
+  }
+
   try {
     const applications = await Application.find({
       job: jobId,
     })
-      .populate("applicant", "name email qualification")
+      .populate("applicant", "firstName lastName")
+      .select("status createdAt applicant")
       .sort({ createdAt: -1 });
 
     return res.status(200).json({
@@ -155,6 +170,39 @@ const getApplicationsForJob = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Failed to fetch applications.",
+      error: error.message,
+    });
+  }
+};
+
+const getApplicationById = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      message: "Invalid application.",
+    });
+  }
+
+  try {
+    const application = await Application.findById(id).populate(
+      "applicant",
+      "firstName lastName",
+    );
+
+    if (!application) {
+      return res.status(404).json({
+        message: "Application not found.",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Application details fetched successfully.",
+      application,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to fetch application details.",
       error: error.message,
     });
   }
@@ -200,4 +248,5 @@ module.exports = {
   getMyApplications,
   getApplicationsForJob,
   updateApplicationStatus,
+  getApplicationById,
 };

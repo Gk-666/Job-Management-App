@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { Job } from '../../../../core/models/job.model';
 import { JobService } from '../../../../core/services/job.service';
 import { RouterLink } from '@angular/router';
@@ -14,7 +14,7 @@ export class JobList {
   private jobService = inject(JobService);
   isLoading = false;
 
-  jobs: Job[] = [];
+  jobs: WritableSignal<Job[]> = signal([]);
 
   ngOnInit() {
     this.isLoading = true;
@@ -24,7 +24,7 @@ export class JobList {
   loadJobList() {
     this.jobService.getJobs().subscribe({
       next: (response) => {
-        this.jobs = response.jobs;
+        this.jobs.set(response.jobs);
         this.isLoading = false;
       },
       error: (error) => {

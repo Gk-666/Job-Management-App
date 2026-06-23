@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { JobService } from '../../../../core/services/job.service';
 import { Job } from '../../../../core/models/job.model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -14,7 +14,7 @@ export class JobDetails {
   private jobService = inject(JobService);
   private route = inject(ActivatedRoute);
 
-  job: Job | null = null;
+  job: WritableSignal<Job | null> = signal(null);
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -22,7 +22,7 @@ export class JobDetails {
 
     this.jobService.getJobById(id).subscribe({
       next: (response) => {
-        this.job = response.job;
+        this.job.set(response.job);
       },
       error: (error) => {
         console.error(error);

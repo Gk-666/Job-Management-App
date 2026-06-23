@@ -1,4 +1,4 @@
-import { MyApplication } from './application.model';
+import { Application } from './application.model';
 import { Job } from './job.model';
 import { User } from './user.model';
 
@@ -27,6 +27,10 @@ export interface CreateApplicationResponse {
 
 export interface GetApplicationResponse {
   message: string;
-  applications: MyApplication[];
+  applications: Application[];
 }
 
+export interface GetApplicationDetailsResponse {
+  message: string;
+  application: Application;
+}

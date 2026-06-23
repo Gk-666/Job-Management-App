@@ -1,5 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
-import { MyApplication } from '../../../../core/models/application.model';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Application } from '../../../../core/models/application.model';
 import { ApplicationService } from '../../../../core/services/application.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -12,8 +12,11 @@ import { RouterLink } from '@angular/router';
 })
 export class MyApplications {
   private applicationService = inject(ApplicationService);
-  applications:MyApplication[] = [];
+
+  applications:WritableSignal<Application[]> =signal([]);
+  
   isLoading = false;
+  
   errorMessage = '';
 
   ngOnInit(): void {
@@ -25,8 +28,7 @@ export class MyApplications {
 
     this.applicationService.getMyApplications().subscribe({
       next: (response) => {
-        this.applications = response.applications;
-        console.log(response.applications);
+        this.applications.set(response.applications);
         this.isLoading = false;
       },
       error: (error) => {

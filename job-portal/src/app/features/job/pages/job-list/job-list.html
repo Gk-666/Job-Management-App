@@ -11,7 +11,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for (job of jobs; track job._id) {
+      @for (job of jobs(); track job._id) {
         <div
           class="bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition"
         >
@@ -28,7 +28,7 @@
 
             <p>💰 ₹{{ job.salary }}</p>
 
-            <p>🕒 Posted on :  {{ job.createdAt | date: 'mediumDate' }}</p>
+            <p>🕒 Posted on : {{ job.createdAt | date: 'mediumDate' }}</p>
           </div>
 
           <button

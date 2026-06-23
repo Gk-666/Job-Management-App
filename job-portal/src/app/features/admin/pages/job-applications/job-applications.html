@@ -1,0 +1,57 @@
+<div class="min-h-screen bg-gray-100 p-6">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Job Application List</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (application of applications(); track application._id) {
+        <div class="bg-white rounded-xl shadow p-5 border border-gray-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 class="text-lg font-semibold">
+                {{ application.applicant.firstName }}
+                {{ application.applicant.lastName }}
+              </h2>
+
+              <p class="text-gray-500 text-sm">
+                {{ application.applicant.email }}
+              </p>
+
+              <p class="text-sm mt-2">
+                Applied:
+                {{ application.createdAt | date: 'mediumDate' }}
+              </p>
+            </div>
+
+            <span
+              class="px-3 py-1 rounded-full text-sm font-medium"
+              [ngClass]="{
+                'bg-yellow-100 text-yellow-700': application.status === 'Pending',
+
+                'bg-blue-100 text-blue-700': application.status === 'Reviewed',
+
+                'bg-green-100 text-green-700': application.status === 'Shortlisted',
+
+                'bg-red-100 text-red-700': application.status === 'Rejected',
+              }"
+            >
+              {{ application.status }}
+            </span>
+          </div>
+
+          <div class="mt-4">
+            <button
+              class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-800"
+              [routerLink]="['/admin/applications', application._id]"
+            >
+              Open application
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <div class="bg-white rounded-xl shadow p-8 text-center text-gray-500 flex flex-col items-center">
+          No applications found for this job.
+          <span class="text-red-700 bg-red-100 rounded mt-4 w-fit px-2 py-1">Error : {{ errorMessage() }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

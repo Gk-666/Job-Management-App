@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CreateApplicationResponse, GetApplicationResponse } from '../models/api-responses';
+import { CreateApplicationResponse, GetApplicationDetailsResponse, GetApplicationResponse } from '../models/api-responses';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,7 +15,14 @@ export class ApplicationService {
   }
 
   getMyApplications(): Observable<GetApplicationResponse> {
-    return this.http.get<GetApplicationResponse>(`${this.apiUrl}/my-applications`); 
+    return this.http.get<GetApplicationResponse>(`${this.apiUrl}/my-applications`);
+  }
+
+  getApplicationsByJob(jobId: string | null) {
+    return this.http.get<GetApplicationResponse>(`${this.apiUrl}/${jobId}`);
+  }
+
+  getApplicationDetails(id:string | null){
+    return this.http.get<GetApplicationDetailsResponse>(`${this.apiUrl}/${id}/details`)
   }
 }
- 

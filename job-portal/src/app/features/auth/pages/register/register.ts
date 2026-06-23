@@ -18,10 +18,17 @@ export class Register {
     name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
   });
+
+  errorMessage = ''
 
   onSubmit() {
     if (this.registerForm.invalid) return;
+
+    if(this.registerForm.get('password')?.value !== this.registerForm.get('confirmPassword')?.value){
+      this.errorMessage = "Confirm Password do not match !"
+    }
 
     this.authService.register(this.registerForm.getRawValue()).subscribe({
       next: (response) => {
