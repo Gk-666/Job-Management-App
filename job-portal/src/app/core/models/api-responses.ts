@@ -34,3 +34,8 @@ export interface GetApplicationDetailsResponse {
   message: string;
   application: Application;
 }
+
+export interface updatedApplicationResponse {
+  message: string;
+  updatedApplication: Application;
+}

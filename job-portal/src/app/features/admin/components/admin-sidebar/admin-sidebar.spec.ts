@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StatCard } from './stat-card';
+import { AdminSidebar } from './admin-sidebar';
 
-describe('StatCard', () => {
-  let component: StatCard;
-  let fixture: ComponentFixture<StatCard>;
+describe('AdminSidebar', () => {
+  let component: AdminSidebar;
+  let fixture: ComponentFixture<AdminSidebar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatCard],
+      imports: [AdminSidebar],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(StatCard);
+    fixture = TestBed.createComponent(AdminSidebar);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

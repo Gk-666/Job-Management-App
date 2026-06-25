@@ -29,7 +29,7 @@ export class JobApplications {
     this.loadApplications(jobId);
   }
 
-  loadApplications(jobId: string | null) {
+  loadApplications(jobId: string) {
     this.applicationService.getApplicationsByJob(jobId).subscribe({
       next: (response) => {
         this.applications.set(response.applications);

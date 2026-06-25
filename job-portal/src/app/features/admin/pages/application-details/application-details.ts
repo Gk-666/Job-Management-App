@@ -7,7 +7,7 @@ import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-application-details',
-  imports: [FormsModule, NgClass],
+  imports: [NgClass, FormsModule],
   templateUrl: './application-details.html',
   styleUrl: './application-details.css',
 })
@@ -19,30 +19,46 @@ export class ApplicationDetails {
 
   application: WritableSignal<Application | null> = signal(null);
 
-  selectedStatus!:string
+  selectedStatus = signal('');
+
+  isUpdating = signal(false);
 
   ngOnInit() {
     const applicationId = this.route.snapshot.paramMap.get('id');
+    if (!applicationId) return;
+
     this.isLoading.set(true);
     this.loadApplicationDetails(applicationId);
   }
 
-  loadApplicationDetails(applicationId: string | null) {
+  loadApplicationDetails(applicationId: string) {
     this.applicationService.getApplicationDetails(applicationId).subscribe({
       next: (response) => {
         this.application.set(response.application);
-        this.isLoading.set(false
-
-        )
+        this.selectedStatus.set(response.application.status);
+        this.isLoading.set(false);
       },
-      error: (error)=>{
-        console.log(error)
-        this.isLoading.set(false)
-      }
+      error: (error) => {
+        console.log(error);
+        this.isLoading.set(false);
+      },
     });
   }
 
-  updateStatus(){
-
+  updateStatus() {
+    this.isUpdating.set(true);
+    this.applicationService
+      .updateApplicationStatus(this.application()?._id, this.selectedStatus())
+      .subscribe({
+        next: (response) => {
+          console.log(response)
+          this.selectedStatus.set(response.updatedApplication.status);
+          this.isUpdating.set(false);
+        },
+        error: (err) => {
+          console.error(err.error);
+          this.isUpdating.set(false);
+        },
+      });
   }
 }

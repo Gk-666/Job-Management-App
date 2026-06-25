@@ -3,8 +3,10 @@ import { Jobs } from './pages/jobs/jobs';
 import { JobApplications } from './pages/job-applications/job-applications';
 import { ApplicationDetails } from './pages/application-details/application-details';
 import { Dashboard } from './pages/dashboard/dashboard';
+import { AdminLayout } from './pages/admin-layout/admin-layout';
 
 export const adminRoutes: Routes = [
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
     path: 'jobs',
     component: Jobs,
@@ -19,6 +21,10 @@ export const adminRoutes: Routes = [
   },
   {
     path: 'dashboard',
+    component: Dashboard,
+  },
+  {
+    path: 'jobs/create',
     component: Dashboard,
   },
 ];

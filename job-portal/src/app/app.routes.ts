@@ -7,9 +7,10 @@ import { Register } from './features/auth/pages/register/register';
 import { ApplyJob } from './features/application/pages/apply-job/apply-job';
 import { authGuard } from './core/guards/auth-guard';
 import { adminGuard } from './core/guards/admin-guard';
+import { AdminLayout } from './features/admin/pages/admin-layout/admin-layout';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'jobs', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'jobs', component: JobList },
@@ -19,6 +20,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     canActivate: [authGuard, adminGuard],
+    component:AdminLayout,
     loadChildren: () => import('./features/admin/admin.routes').then((m) => m.adminRoutes),
   },
 ];

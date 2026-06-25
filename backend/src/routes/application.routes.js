@@ -30,7 +30,7 @@ router.get("/:jobId", protect, authorizeRoles("admin"), getApplicationsForJob);
 
 router.get("/:id/details", protect, authorizeRoles("admin"), getApplicationById);
 
-router.get(
+router.patch(
   "/:id/status",
   protect,
   authorizeRoles("admin"),

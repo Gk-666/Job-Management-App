@@ -218,14 +218,25 @@ const updateApplicationStatus = async (req, res) => {
     });
   }
 
+  const validStatus = ["Reviewed", "Pending", "Rejected", "Shortlisted"];
+
+  if (!validStatus.includes(status)) {
+    return res.status(400).json({
+      message: "Invalid status.",
+    });
+  }
+
   try {
-    const updatedStatusApplication = await Application.findByIdAndUpdate(
+    const updatedApplication = await Application.findByIdAndUpdate(
       id,
       { status },
-      { new: true, runValidators: true },
+      {
+        returnDocument:"after",
+        runValidators: true,
+      },
     );
 
-    if (!updatedStatusApplication) {
+    if (!updatedApplication) {
       return res.status(404).json({
         message: "Application not found.",
       });
@@ -233,14 +244,14 @@ const updateApplicationStatus = async (req, res) => {
 
     return res.status(200).json({
       message: "Application status updated successfully.",
-      updatedStatusApplication,
-    });
+      updatedApplication,
+    }); 
   } catch (error) {
     return res.status(500).json({
       message: "Failed to update status.",
       error: error.message,
     });
-  }
+  } 
 };
 
 module.exports = {

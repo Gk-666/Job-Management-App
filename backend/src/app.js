@@ -14,6 +14,6 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/application", applicationRoutes);
-app.use("api/dashboard", dashboardRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 module.exports = app;

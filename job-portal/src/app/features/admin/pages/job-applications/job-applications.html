@@ -40,16 +40,21 @@
           <div class="mt-4">
             <button
               class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-800"
-              [routerLink]="['/admin/applications', application._id]"
+              [routerLink]="['/admin/jobs/applications', application._id]"
             >
               Open application
             </button>
           </div>
         </div>
       } @empty {
-        <div class="bg-white rounded-xl shadow p-8 text-center text-gray-500 flex flex-col items-center">
+        <div
+          class="bg-white rounded-xl shadow p-8 text-center text-gray-500 flex flex-col items-center"
+        >
           No applications found for this job.
-          <span class="text-red-700 bg-red-100 rounded mt-4 w-fit px-2 py-1">Error : {{ errorMessage() }}</span>
+          @if (errorMessage()) {
+            <span class="text-red-700 bg-red-100 rounded mt-4 w-fit px-2 py-1">
+              {{ errorMessage() }}</span>
+          }
         </div>
       }
     </div>
