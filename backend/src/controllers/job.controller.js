@@ -5,7 +5,7 @@ const createJob = async (req, res) => {
   const { title, company, location, salary, description, skillsRequired } =
     req.body;
 
-  if (!title || !company || !location || salary === undefined || !description) {
+  if (!title || !company || !location || !salary || !description) {
     return res.status(400).json({
       message: "All field are required.",
     });

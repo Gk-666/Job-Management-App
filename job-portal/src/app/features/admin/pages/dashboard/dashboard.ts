@@ -1,14 +1,16 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { DashboardService } from '../../../../core/services/dashboard.service';
 import { DashboardStats } from '../../../../core/models/dashboard.model';
-import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
+import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { CommonModule, NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard',
-  imports: [BaseChartDirective],
+  imports: [BaseChartDirective, NgClass, CommonModule, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -50,7 +52,13 @@ export class Dashboard {
 
     plugins: {
       legend: {
-        display: false,
+        display: true,
+        labels: {
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+        },
       },
     },
 
@@ -74,7 +82,6 @@ export class Dashboard {
   barChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [],
     datasets: [],
-    
   };
 
   ngOnInit() {
@@ -98,12 +105,7 @@ export class Dashboard {
           datasets: [
             {
               data: res.applicationsByStatus.map((item) => item.count),
-              backgroundColor: [
-                '#8b5cf6', 
-                '#06b6d4', 
-                '#10b981', 
-                '#f59e0b', 
-              ],
+              backgroundColor: ['#8b5cf6', '#06b6d4', '#10b981', '#f59e0b'],
               borderWidth: 1,
             },
           ],
@@ -113,7 +115,7 @@ export class Dashboard {
           labels: res.topSkills.map((item) => item._id),
           datasets: [
             {
-              label: 'Demand',
+              label: 'Demanding Jobs',
               data: res.topSkills.map((item) => item.count),
               backgroundColor: ['#8b5cf6'],
               hoverBorderWidth: 2,
@@ -124,7 +126,7 @@ export class Dashboard {
         this.isLoading.set(false);
       },
       error: (err) => {
-        console.error(err.err);
+        console.error(err.err.message);
         this.isLoading.set(false);
       },
     });

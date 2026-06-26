@@ -17,9 +17,12 @@ export class Login {
   loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
-  }); 
+  });
+
+  isLoading = false;
 
   onSubmit() {
+    this.isLoading = true;
     if (this.loginForm.invalid) return;
 
     this.authService.login(this.loginForm.getRawValue()).subscribe({
@@ -27,10 +30,16 @@ export class Login {
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
 
+        if (response.user.role === 'admin') {
+          this.router.navigate(['/admin']);
+        }
+
         this.router.navigate(['/jobs']);
+        this.isLoading = false;
       },
       error: (error) => {
         console.error(error);
+        this.isLoading = false;
       },
     });
   }

@@ -4,6 +4,7 @@ import { JobApplications } from './pages/job-applications/job-applications';
 import { ApplicationDetails } from './pages/application-details/application-details';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { AdminLayout } from './pages/admin-layout/admin-layout';
+import { CreateJob } from './pages/create-job/create-job';
 
 export const adminRoutes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -25,6 +26,6 @@ export const adminRoutes: Routes = [
   },
   {
     path: 'jobs/create',
-    component: Dashboard,
+    component: CreateJob,
   },
 ];

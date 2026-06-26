@@ -4,6 +4,7 @@ export interface Job {
   company: string;
   location: string;
   salary: string;
+  experience:string;
   description: string;
   skillsRequired: string[];
   status: 'Open' | 'Close';

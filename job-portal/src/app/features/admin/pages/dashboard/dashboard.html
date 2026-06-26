@@ -1,74 +1,150 @@
-<div class="flex flex-col w-4xl">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-  <div class="bg-white shadow rounded-xl p-6">
-    <p class="text-gray-500">Total Jobs</p>
+<div class="space-y-8">
+  <!-- Hero -->
+  <section
+    class="rounded-3xl overflow-hidden bg-gradient-to-r from-purple-700 via-violet-700 to-indigo-700 p-8 shadow-xl"
+  >
+    <h1 class="text-4xl font-bold text-white">Welcome Back 👋</h1>
 
-    <h2 class="text-3xl font-bold mt-2">
-      {{ stats()?.totalJobs }}
-    </h2>
-  </div>
+    <p class="text-purple-100 mt-2">Here's what's happening across your recruitment process.</p>
+  </section>
 
-  <div class="bg-white shadow rounded-xl p-6">
-    <p class="text-gray-500">Open Jobs</p>
+  <!-- Stats -->
 
-    <h2 class="text-3xl font-bold mt-2">
-      {{ openJobs }}
-    </h2>
-  </div>
+  <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+      <p class="text-slate-400 text-sm">Total Jobs</p>
 
-  <div class="bg-white shadow rounded-xl p-6">
-    <p class="text-gray-500">Closed Jobs</p>
+      <h2 class="text-white text-4xl font-bold mt-4">
+        {{ stats()?.totalJobs }}
+      </h2>
+    </div>
 
-    <h2 class="text-3xl font-bold mt-2">
-      {{ closedJobs }}
-    </h2>
-  </div>
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+      <p class="text-slate-400 text-sm">Open Jobs</p>
 
-  <div class="bg-white shadow rounded-xl p-6">
-    <p class="text-gray-500">Total Applications</p>
+      <h2 class="text-green-400 text-4xl font-bold mt-4">
+        {{ openJobs }}
+      </h2>
+    </div>
 
-    <h2 class="text-3xl font-bold mt-2">
-      {{ stats()?.totalApplications }}
-    </h2>
-  </div>
-</div>
-<div class="grid md:grid-cols-2 gap-6 mt-8">
-  <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-    <h2 class="text-lg font-semibold mb-4">Application Status</h2>
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+      <p class="text-slate-400 text-sm">Closed Jobs</p>
 
-    <canvas baseChart [data]="pieChartData" [type]="pieChartType" [options]="pieChartOptions">
-    </canvas>
-  </div>
-  <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-    <h2 class="text-lg font-semibold mb-4">Top Skills</h2>
+      <h2 class="text-red-400 text-4xl font-bold mt-4">
+        {{ closedJobs }}
+      </h2>
+    </div>
 
-    <canvas class="mt-25" baseChart [data]="barChartData" [type]="barChartType" [options]="barChartOptions">
-    </canvas>
-  </div>
-</div>
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+      <p class="text-slate-400 text-sm">Applications</p>
 
-<section class="bg-white rounded-xl shadow p-6 mt-8">
-  <h2 class="text-xl font-semibold mb-4">Recent Jobs</h2>
+      <h2 class="text-purple-400 text-4xl font-bold mt-4">
+        {{ stats()?.totalApplications }}
+      </h2>
+    </div>
+  </section>
 
-  <div class="space-y-3">
-    @for (job of stats()?.recentJobs; track job) {
-      <div class="flex justify-between items-center border-b pb-2">
-        <div>
-          <p class="font-medium">
-            {{ job.title }}
-          </p>
+  <!-- Charts -->
 
-          <p class="text-sm text-gray-500">
-            {{ job.company }}
-          </p>
-        </div>
+  <section class="grid xl:grid-cols-2 gap-8">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8">
+      <h2 class="text-xl text-white font-semibold mb-6">Application Status</h2>
 
-        <span>
-          {{ job.status }}
-        </span>
+      <canvas baseChart [data]="pieChartData" [type]="pieChartType" [options]="pieChartOptions">
+      </canvas>
+    </div>
+
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8">
+      <h2 class="text-xl text-white font-semibold mb-6">Top Skills</h2>
+
+      <canvas
+        class="mt-25"
+        baseChart
+        [data]="barChartData"
+        [type]="barChartType"
+        [options]="barChartOptions"
+      >
+      </canvas>
+    </div>
+  </section>
+
+  <!-- Recent Jobs -->
+
+  <section class="bg-slate-900 border border-slate-800 rounded-3xl p-8">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-xl font-semibold text-white">Recent Jobs</h2>
+
+        <p class="text-slate-400 text-sm">Latest jobs posted by recruiters</p>
       </div>
-    }
-  </div>
-</section>
 
+      <button routerLink="/admin/jobs" class="text-purple-400 hover:text-purple-300 font-medium">
+        View All →
+      </button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-slate-800">
+            <th class="text-left py-4 text-slate-400 font-medium">Job</th>
+
+            <th class="text-left py-4 text-slate-400 font-medium">Company</th>
+
+            <th class="text-left py-4 text-slate-400 font-medium">Status</th>
+
+            <th class="text-left py-4 text-slate-400 font-medium">Posted</th>
+
+            <th class="text-center py-4 text-slate-400 font-medium">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (job of stats()?.recentJobs; track job) {
+            <tr class="border-b border-slate-800 hover:bg-slate-800/50 transition">
+              <td class="py-5">
+                <div>
+                  <p class="text-white font-medium">
+                    {{ job.title }}
+                  </p>
+
+                  <p class="text-slate-500 text-sm">
+                    <!-- {{ job.location }} -->
+                  </p>
+                </div>
+              </td>
+
+              <td class="text-slate-300">
+                {{ job.company }}
+              </td>
+
+              <td>
+                <span
+                  class="px-3 py-1 rounded-full text-xs font-medium"
+                  [ngClass]="{
+                    'bg-green-500/20 text-green-300': job.status === 'Open',
+                    'bg-red-500/20 text-red-300': job.status === 'Closed',
+                  }"
+                >
+                  {{ job.status }}
+                </span>
+              </td>
+
+              <td class="text-slate-400">
+                {{ job.createdAt | date: 'dd MMM yyyy' }}
+              </td>
+
+              <td class="text-center">
+                <button
+                  class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-sm transition"
+                >
+                  View
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
 </div>

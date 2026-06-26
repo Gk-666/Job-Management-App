@@ -45,7 +45,7 @@ const getDashboardStats = async (req, res) => {
         { $limit: 5 },
       ]),
       await Job.find()
-        .select("title company status createdAt")
+        .select("title company status createdAt _id")
         .sort({ createdAt: -1 })
         .limit(5),
     ]);
