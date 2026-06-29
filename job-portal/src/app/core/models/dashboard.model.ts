@@ -18,6 +18,7 @@ export interface DashboardStats {
   }[];
 
   recentJobs: {
+    id: string;
     title: string;
     company: string;
     status: string;

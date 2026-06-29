@@ -1,0 +1,132 @@
+<div class="space-y-8">
+  <!-- Header -->
+
+  <section class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+    <div>
+      <h1 class="text-4xl font-bold text-white">Manage Jobs</h1>
+
+      <p class="text-slate-400 mt-2">Manage all published jobs and review applications.</p>
+    </div>
+
+    <button
+      routerLink="/admin/jobs/create"
+      class="px-6 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-violet-600 text-white font-semibold hover:scale-105 transition"
+    >
+      + Create Job
+    </button>
+  </section>
+
+  <!-- Search -->
+
+  <section class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+    <input
+      type="text"
+      placeholder="Search jobs..."
+      class="w-full bg-transparent text-white placeholder:text-slate-500 outline-none"
+    />
+  </section>
+
+  <!-- Table -->
+
+  <section class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-slate-800 bg-slate-900">
+            <th class="text-left p-5 text-slate-400">Job</th>
+
+            <th class="text-left p-5 text-slate-400">Company</th>
+
+            <th class="text-left p-5 text-slate-400">Status</th>
+
+            <th class="text-left p-5 text-slate-400">Applications</th>
+
+            <th class="text-left p-5 text-slate-400">Posted</th>
+
+            <th class="text-right p-5 text-slate-400">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (job of jobs(); track job._id) {
+            <tr class="border-b border-slate-800 hover:bg-slate-800/40 transition">
+              <!-- Job -->
+
+              <td class="p-5">
+                <div>
+                  <p class="text-white font-semibold">
+                    {{ job.title }}
+                  </p>
+
+                  <p class="text-slate-500 text-sm">
+                    {{ job.location }}
+                  </p>
+                </div>
+              </td>
+
+              <!-- Company -->
+
+              <td class="p-5 text-slate-300">
+                {{ job.company }}
+              </td>
+
+              <!-- Status -->
+
+              <td class="p-5">
+                <span
+                  class="px-3 py-1 rounded-full text-xs font-medium"
+                  [ngClass]="{
+                    'bg-green-500/20 text-green-300': job.status === 'Open',
+
+                    'bg-red-500/20 text-red-300': job.status === 'Closed',
+                  }"s
+                >
+                  {{ job.status }}
+                </span>
+              </td>
+
+              <!-- Applications -->
+
+              <td class="p-5">
+                <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300">
+                  {{ job.applicationCount }}
+                </span>
+              </td>
+
+              <!-- Posted -->
+
+              <td class="p-5 text-slate-400">
+                {{ job.createdAt | date: 'dd MMM yyyy' }}
+              </td>
+
+              <!-- Actions -->
+
+              <td class="p-5">
+                <div class="flex justify-end gap-3">
+                  <button
+                    [routerLink]="['/admin/jobs', job._id, 'applications']"
+                    class="px-4 py-2 rounded-xl bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 transition"
+                  >
+                    Applications
+                  </button>
+
+                  <button
+                    [routerLink]="['/admin/jobs/edit', job._id]"
+                    class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 transition"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+          } @empty {
+            <tr>
+              <td colspan="6" class="text-center py-16 text-slate-500">No jobs found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

@@ -10,7 +10,7 @@
 
   <form [formGroup]="jobForm" class="space-y-8" (ngSubmit)="onSubmit()">
     <!-- Job Information -->
-    <section class="bg-slate-900 border border-slate-800 rounded-3xl p-8">
+    <section formGroupName="jobInfo" class="bg-slate-900 border border-slate-800 rounded-3xl p-8">
       <h2 class="text-xl text-white font-semibold mb-6">Job Information</h2>
 
       <div class="grid md:grid-cols-2 gap-6">
@@ -28,7 +28,7 @@
           <label class="text-slate-400">Company Name</label>
 
           <input
-            formControlName="companyName"
+            formControlName="company"
             type="text"
             class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-purple-500"
           />
@@ -48,7 +48,7 @@
           <label class="text-slate-400">Salary Range</label>
 
           <input
-            formControlName="salaryRange"
+            formControlName="salary"
             type="text"
             placeholder="e.g ₹6 LPA - ₹10 LPA"
             class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-purple-500"
@@ -59,7 +59,7 @@
 
     <!-- Requirements -->
 
-    <section class="bg-slate-900 border border-slate-800 rounded-3xl p-8">
+    <section formGroupName="requirements" class="bg-slate-900 border border-slate-800 rounded-3xl p-8">
       <h2 class="text-xl text-white font-semibold mb-6">Requirements</h2>
 
       <div class="grid md:grid-cols-2 gap-6">
@@ -81,7 +81,7 @@
           <label class="text-slate-400"> Experience Level </label>
 
           <select
-            formControlName="experienceLevel"
+            formControlName="experience"
             class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white"
           >
             <option value="Fresher">Fresher</option>

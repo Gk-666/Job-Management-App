@@ -30,8 +30,11 @@ export class Login {
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
 
+        console.log(response.user)
         if (response.user.role === 'admin') {
           this.router.navigate(['/admin']);
+          this.isLoading = false;
+          return
         }
 
         this.router.navigate(['/jobs']);

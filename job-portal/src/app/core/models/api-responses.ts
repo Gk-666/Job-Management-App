@@ -1,8 +1,13 @@
 import { Application } from './application.model';
-import { Job } from './job.model';
+import { AdminJob, Job } from './job.model';
 import { User } from './user.model';
 
-export interface GetJobResopnse {
+export interface PublishJobResponse {
+  message: string;
+  job: Job;
+}
+
+export interface GetJobsResopnse {
   jobs: Job[];
 }
 
@@ -38,4 +43,9 @@ export interface GetApplicationDetailsResponse {
 export interface updatedApplicationResponse {
   message: string;
   updatedApplication: Application;
+}
+
+export interface GetAdminJobResponse {
+  message: string;
+  jobs: AdminJob[];
 }

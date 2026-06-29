@@ -2,10 +2,26 @@ const { default: mongoose } = require("mongoose");
 const Job = require("../models/job.model");
 
 const createJob = async (req, res) => {
-  const { title, company, location, salary, description, skillsRequired } =
-    req.body;
+  const {
+    title,
+    company,
+    location,
+    salary,
+    description,
+    skillsRequired,
+    experience,
+    employmentType,
+  } = req.body;
 
-  if (!title || !company || !location || !salary || !description) {
+  if (
+    !title ||
+    !company ||
+    !location ||
+    !salary ||
+    !description ||
+    !experience ||
+    !employmentType
+  ) {
     return res.status(400).json({
       message: "All field are required.",
     });
@@ -27,10 +43,11 @@ const createJob = async (req, res) => {
       company,
       location,
       salary,
-      description,
+      experience,
+      employmentType,
       skillsRequired,
+      description,
       createdBy: req.user._id,
-      // createdBy: '6a2f9228b6bdd1a35997e4a2',
     });
 
     return res.status(201).json({
@@ -38,6 +55,7 @@ const createJob = async (req, res) => {
       job,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: "Failed to create job.",
       error: error.message,
@@ -88,6 +106,25 @@ const getJobById = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Failed to fetch job.",
+      error: error.message,
+    });
+  }
+};
+
+const getAdminJobs = async (req, res) => {
+  try {
+    const jobs = await Job.find({ createdBy: req.user._id }).sort({
+      createdAt: -1,
+    });
+
+    return res.status(200).json({
+      message: "Jobs fetched successfully.",
+      jobs,
+    });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      message: "Failed to fetch jobs",
       error: error.message,
     });
   }
@@ -160,4 +197,11 @@ const deleteJob = async (req, res) => {
   }
 };
 
-module.exports = { createJob, getAllJobs, getJobById, updateJob, deleteJob };
+module.exports = {
+  createJob,
+  getAllJobs,
+  getJobById,
+  updateJob,
+  deleteJob,
+  getAdminJobs,
+};

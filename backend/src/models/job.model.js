@@ -25,8 +25,9 @@ const jobSchema = new mongoose.Schema(
     },
 
     salary: {
-      type: Number,
-      min: 0,
+      type: String,
+      required:true,
+      trim:true
     },
 
     description: {
@@ -42,10 +43,16 @@ const jobSchema = new mongoose.Schema(
       },
     ],
 
-    experience:{
-      type:String,
-      required:true,
-      trim:true
+    experience: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    employmentType: {
+      type: String,
+      require: true,
+      trim: true,
     },
 
     status: {
@@ -53,7 +60,7 @@ const jobSchema = new mongoose.Schema(
       enum: ["Open", "Close"],
       default: "Open",
     },
-    
+
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
