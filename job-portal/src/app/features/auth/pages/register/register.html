@@ -18,16 +18,119 @@
     </div>
   </div>
   <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
-    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg text-gray-600 font-semibold">
-      <label for="">Name</label>
-      <input type="text" />
-      <label for="">Email</label>
-      <input type="text" />
-      <label for="">Password</label>
-      <input type="text" />
-      <label for="">Confirm Password</label>
-      <input type="text" />
-      <span class="text-red-500">{{ errorMessage }}</span>
+    <div class="w-full max-w-2xl bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800">Create Account</h2>
+        @if (registerForm.dirty) {
+          <p class="text-blue-600 mt-4 bg-blue-100 py-1 px-2 rounded">
+            Remember this details will be used further for your job application process.
+          </p>
+        }
+      </div>
+
+      <form [formGroup]="registerForm" class="space-y-5">
+        <div class="grid grid-cols-2 gap-2">
+          <!-- Name -->
+
+          <div class="grid grid-cols-2 gap-2">
+            <div class="flex flex-col gap-2">
+              <label class="text-sm font-medium text-gray-600"> First Name </label>
+
+              <input
+                type="text"
+                placeholder="John"
+                class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
+                maxlength="20"
+                formControlName="firstName"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="text-sm font-medium text-gray-600"> Last Name </label>
+
+              <input
+                type="text"
+                placeholder="Doe"
+                class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
+                maxlength="20"
+                formControlName="lastName"
+              />
+            </div>
+          </div>
+
+          <!-- Email -->
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-medium text-gray-600"> Email </label>
+
+            <input
+              type="email"
+              placeholder="john@example.com"
+              class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
+              formControlName="email"
+            />
+          </div>
+
+          <!-- Password -->
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-medium text-gray-600"> Password </label>
+
+            <input
+              type="password"
+              placeholder="••••••••"
+              class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
+              formControlName="password"
+            />
+          </div>
+
+          <!-- Confirm Password -->
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-medium text-gray-600"> Confirm Password </label>
+
+            <input
+              type="password"
+              placeholder="••••••••"
+              class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
+              formControlName="confirmPassword"
+            />
+          </div>
+        </div>
+
+        @if (errorMessage) {
+          <p class="text-red-500 text-sm">
+            {{ errorMessage }}
+          </p>
+        }
+
+        <!-- Button -->
+
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-gradient-to-r from-purple-600 to-violet-600 py-3 font-semibold text-white hover:shadow-xl hover:scale-[1.02] transition"
+          (click)="onSubmit()"
+        >
+          Create Account
+        </button>
+
+        <!-- Divider -->
+
+        <div class="flex items-center gap-4 py-2">
+          <div class="flex-1 h-px bg-gray-300"></div>
+
+          <span class="text-gray-400 text-sm"> OR </span>
+
+          <div class="flex-1 h-px bg-gray-300"></div>
+        </div>
+
+        <!-- Login -->
+
+        <p class="text-center text-gray-500">
+          Already have an account?
+
+          <a routerLink="/login" class="text-purple-600 font-semibold hover:underline"> Sign In </a>
+        </p>
+      </form>
     </div>
   </div>
 </div>

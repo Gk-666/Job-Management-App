@@ -31,15 +31,15 @@ export class JobApplications {
 
   loadApplications(jobId: string) {
     this.applicationService.getApplicationsByJob(jobId).subscribe({
-      next: (response) => {
+      next: (response) => { 
         this.applications.set(response.applications);
         this.isLoading.set(false);
       },
       error: (error) => {
-        console.log(error);
+        console.error(error.error);
         this.errorMessage.set(error.error.message);
         this.isLoading.set(false);
       },
-    });
+    });  
   }
 }

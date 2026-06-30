@@ -1,33 +1,112 @@
-<div class="min-h-screen bg-gray-100 py-10">
-  <form
-    [formGroup]="loginForm"
-    class="max-w-sm mx-auto bg-white mt-18 rounded-xl shadow-lg p-8 font-medium text-gray-700 flex flex-col space-y-4"
+<div class="min-h-screen flex bg-gray-100">
+  <!-- Left Side -->
+
+  <div
+    class="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-purple-700 via-purple-600 to-indigo-700"
   >
-    <h2 class="text-2xl border-b pb-2">Welcome back !</h2>
-    <div class="flex flex-col gap-2 w-full">
-      <label for="email">Email : </label>
-      <input
-        formControlName="email"
-        class="border focus:outline-purple-300 border-gray-400 rounded-lg p-2"
-        type="email"
-        id="email"
-        autocomplete="off"
-      />
-      <label for="password">Password : </label>
-      <input
-        formControlName="password"
-        class="border focus:outline-purple-300 border-gray-400 rounded-lg p-2"
-        type="password"
-        id="email"
-        autocomplete="off"
-      />
+    <div class="absolute -top-20 -left-20 w-72 h-72 bg-white/10 rounded-full"></div>
+
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-pink-400/10 rounded-full"></div>
+
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-white/5 rounded-full"
+    ></div>
+
+    <div class="relative z-10 flex flex-col justify-center px-16 text-white">
+      <h1 class="text-5xl font-bold mb-4">Welcome Back</h1>
+
+      <p class="text-xl text-purple-100 leading-relaxed">
+        Continue your journey and discover your next career opportunity.
+      </p>
     </div>
-    <button
-      type="submit"
-      class="text-white bg-purple-500 rounded-lg p-2 focus:ring-3 focus:ring-purple-400"
-      (click)="onSubmit()"
+  </div>
+
+  <!-- Right Side -->
+
+  <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="w-full max-w-md bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-10 space-y-6"
     >
-      login
-    </button>
-  </form>
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-800">Sign In</h2>
+
+        <p class="text-gray-500 mt-2">Login to access your account.</p>
+      </div>
+
+      <!-- Email -->
+
+      <div class="space-y-2 flex flex-col">
+        <label for="email" class="text-sm font-medium text-gray-600"> Email </label>
+
+        <input
+          id="email"
+          formControlName="email"
+          type="email"
+          autocomplete="off"
+          placeholder="john@example.com"
+          class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
+        />
+      </div>
+
+      <!-- Password -->
+
+      <div class="space-y-2">
+        <div class="flex justify-between">
+          <label for="password" class="text-sm font-medium text-gray-600"> Password </label>
+
+          <a routerLink="/forgot-password" class="text-sm text-purple-600 hover:underline">
+            Forgot Password?
+          </a>
+        </div>
+
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          autocomplete="off"
+          placeholder="••••••••"
+          class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
+        />
+      </div>
+
+      <!-- Error -->
+
+      @if (errorMessage) {
+        <p class="text-red-500 text-sm">
+          {{ errorMessage }}
+        </p>
+      }
+
+      <!-- Button -->
+
+      <button
+        type="submit"
+        class="w-full rounded-xl bg-gradient-to-r from-purple-600 to-violet-600 py-3 font-semibold text-white hover:shadow-xl hover:scale-[1.02] transition"
+      >
+        Sign In
+      </button>
+
+      <!-- Divider -->
+
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-gray-300"></div>
+
+        <span class="text-gray-400 text-sm"> OR </span>
+
+        <div class="flex-1 h-px bg-gray-300"></div>
+      </div>
+
+      <!-- Register -->
+
+      <p class="text-center text-gray-500">
+        Don't have an account?
+
+        <a routerLink="/register" class="text-purple-600 font-semibold hover:underline">
+          Create Account
+        </a>
+      </p>
+    </form>
+  </div>
 </div>

@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -21,6 +21,7 @@ export class Login {
 
   isLoading = false;
 
+  errorMessage!: string;
   onSubmit() {
     this.isLoading = true;
     if (this.loginForm.invalid) return;
@@ -30,14 +31,13 @@ export class Login {
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
 
-        console.log(response.user)
         if (response.user.role === 'admin') {
           this.router.navigate(['/admin']);
           this.isLoading = false;
-          return
+          return;
         }
 
-        this.router.navigate(['/jobs']);
+        this.router.navigate(['/home']);
         this.isLoading = false;
       },
       error: (error) => {

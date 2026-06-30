@@ -113,16 +113,44 @@ const getJobById = async (req, res) => {
 
 const getAdminJobs = async (req, res) => {
   try {
-    const jobs = await Job.find({ createdBy: req.user._id }).sort({
-      createdAt: -1,
-    });
+    const jobs = await Job.aggregate([
+      {
+        $match: {
+          createdBy: req.user._id,
+        },
+      },
+      {
+        $lookup: {
+          from: "applications",
+          localField: "_id",
+          foreignField: "job",
+          as: "applications",
+        },
+      },
+      {
+        $addFields: {
+          applicationCount: {
+            $size: "$applications",
+          },
+        },
+      },
+      {
+        $project: {
+          applications: 0,
+        },
+      },
+    ])
+      .sort({
+        createdAt: -1,
+      })
+      .limit(20);
 
     return res.status(200).json({
       message: "Jobs fetched successfully.",
       jobs,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
       message: "Failed to fetch jobs",
       error: error.message,
