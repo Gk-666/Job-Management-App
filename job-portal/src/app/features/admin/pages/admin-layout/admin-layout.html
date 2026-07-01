@@ -1,13 +1,10 @@
-<div class="flex bg-slate-950">
+<div class="flex bg-slate-950 h-screen">
   <app-admin-sidebar />
 
-  <div class="flex-1 max-h-screen overflow-y-auto">
+  <div class="flex-1 flex flex-col">
     <app-admin-navbar />
-    <main class="flex-1 p-8">
+    <main class="flex-1 p-8 overflow-y-auto">
       <router-outlet />
     </main>
   </div>
 </div>
-@if(error){
-  
-}

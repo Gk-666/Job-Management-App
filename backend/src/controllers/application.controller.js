@@ -120,12 +120,6 @@ const getMyApplications = async (req, res) => {
       .populate("job", "title company location salary status")
       .sort({ createdAt: -1 });
 
-    if (applications.length === 0) {
-      return res.status(200).json({
-        message: "No application Found.",
-      });
-    }
-
     return res.status(200).json({
       message: "Applications fetched successfully.",
       applications,
@@ -231,7 +225,7 @@ const updateApplicationStatus = async (req, res) => {
       id,
       { status },
       {
-        returnDocument:"after",
+        returnDocument: "after",
         runValidators: true,
       },
     );
@@ -245,13 +239,13 @@ const updateApplicationStatus = async (req, res) => {
     return res.status(200).json({
       message: "Application status updated successfully.",
       updatedApplication,
-    }); 
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Failed to update status.",
       error: error.message,
     });
-  } 
+  }
 };
 
 module.exports = {

@@ -97,12 +97,16 @@
           </div>
         </div>
 
-        @if (errorMessage) {
+        @if (errorMessage || registerForm.errors) {
           <p class="text-red-500 text-sm">
             {{ errorMessage }}
           </p>
         }
-
+        @if(registerForm.hasError('minlength') && registerForm.get('password')?.touched){
+          <p class="text-red-500 text-sm">
+            Password should have at least 6 characters.
+          </p>
+        }
         <!-- Button -->
 
         <button

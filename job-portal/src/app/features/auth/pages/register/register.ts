@@ -28,7 +28,9 @@ export class Register {
     if (this.registerForm.invalid){
       this.errorMessage = 'Please enter valid information.'
       return;
-    } 
+    } else{
+      this.errorMessage = ''
+    }
 
     if (
       this.registerForm.get('password')?.value !== this.registerForm.get('confirmPassword')?.value
@@ -40,11 +42,10 @@ export class Register {
     console.log(this.registerForm.getRawValue());
     this.authService.register(this.registerForm.getRawValue()).subscribe({
       next: (response) => {
-        console.log(response.message);
         this.router.navigate(['/login']);
       },
       error: (error) => {
-        console.log(error);
+        console.error(error);
       },
     });
   }

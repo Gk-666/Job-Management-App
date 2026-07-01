@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApplicationService } from '../../../../core/services/application.service';
 import { ActivatedRoute } from '@angular/router';
@@ -13,6 +13,8 @@ export class ApplicationForm {
   private fb = inject(FormBuilder);
   private applicationService = inject(ApplicationService);
   private route = inject(ActivatedRoute);
+
+  isLoading = signal(false)
 
   applicationForm = this.fb.nonNullable.group({
     personalInfo: this.fb.nonNullable.group({
@@ -39,7 +41,7 @@ export class ApplicationForm {
 
   resumeFile: File | null = null;
 
-  ngOnInit() {
+  ngOnInit():void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     
     this.applicationForm.patchValue({
@@ -55,27 +57,29 @@ export class ApplicationForm {
     return this.applicationForm.get('professionalInfo.skills') as FormArray;
   }
 
-  addSkill() {
+  addSkill():void {
     this.skills.push(this.fb.control('', Validators.required));
   }
 
-  removeSkill(index: number) {
+  removeSkill(index: number):void {
     if (this.skills.length > 1) {
       this.skills.removeAt(index);
       return;
     }
   }
 
-  onSelectedFile(event: HTMLInputElement) {
+  onSelectedFile(event: HTMLInputElement):void {
     if (event.files?.length) {
       this.resumeFile = event?.files[0];
     }
   }
 
-  onSubmit() {
+  onSubmit():void {
+    this.isLoading.set(true)
     if (this.applicationForm.invalid) {
       alert('Invalid Form details.');
       this.applicationForm.markAllAsTouched();
+      this.isLoading.set(false)
       return;
     }
 

@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-gray-100 py-10">
-  <h1 class="text-center mb-4 font-semibold text-3xl">Job Application</h1>
+  <h1 class="text-center mb-4 font-bold text-3xl text-slate-700">Job Application Form</h1>
   <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-7">
     <form [formGroup]="applicationForm" class="flex flex-col space-y-3">
       <h2 class="text-xl font-bold border-b pb-2">Personal info</h2>
@@ -171,6 +171,7 @@
           type="submit"
           class="bg-purple-600 p-2 rounded-lg text-white focus:ring-2 focus:ring-purple-400 transition"
           (click)="onSubmit()"
+          [disabled]="isLoading()"
         >
           Submit
         </button>

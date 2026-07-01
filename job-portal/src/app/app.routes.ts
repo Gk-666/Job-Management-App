@@ -13,12 +13,18 @@ import { Layout } from './layout/layout';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
-  { path: 'home', component: Layout },
+  {
+    path: 'home',
+    component: Layout,
+    children: [
+      {path:'', redirectTo: 'jobs', pathMatch:'full'},
+      { path: 'jobs', component: JobList },
+      { path: 'jobs/:id', component: JobDetails },
+      { path: 'jobs/:id/apply', component: ApplyJob },
+      { path: 'my-applications', component: MyApplications },
+    ],
+  },
   { path: 'register', component: Register },
-  { path: 'jobs', component: JobList },
-  { path: 'jobs/:id', component: JobDetails },
-  { path: 'jobs/:id/apply', component: ApplyJob },
-  { path: 'applications', component: MyApplications },
   {
     path: 'admin',
     canActivate: [authGuard, adminGuard],
