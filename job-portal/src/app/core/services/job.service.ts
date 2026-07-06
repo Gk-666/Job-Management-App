@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
   GetAdminJobResponse,
@@ -16,8 +16,11 @@ export class JobService {
 
   private http = inject(HttpClient);
 
-  getJobs() {
-    return this.http.get<GetJobsResopnse>(this.apiUrl);
+  private httpParams = new HttpParams();
+
+  getJobs(searchTerm: string) {
+    const params = this.httpParams.set('search', searchTerm);
+    return this.http.get<GetJobsResopnse>(this.apiUrl, { params });
   }
 
   getJobById(id: string) {
@@ -28,7 +31,9 @@ export class JobService {
     return this.http.post<PublishJobResponse>(`${this.apiUrl}`, jobData);
   }
 
-  getAdminJobs() {
-    return this.http.get<GetAdminJobResponse>(`${this.apiUrl}/my-jobs`);
+  getAdminJobs(searchTerm: string) {
+    const params = this.httpParams.set('search', searchTerm);
+
+    return this.http.get<GetAdminJobResponse>(`${this.apiUrl}/my-jobs`, { params });
   }
 }
