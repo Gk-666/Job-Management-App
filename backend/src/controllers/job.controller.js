@@ -64,12 +64,36 @@ const createJob = async (req, res) => {
 };
 
 const getAllJobs = async (req, res) => {
+  const { search } = req.query;
+
+  const filter = {
+    $or: [
+      {
+        title: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        company: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        location: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ],
+    status: "Open",
+  };
+
   try {
-    const jobs = await Job.find({
-      status: "Open",
-    })
+    const jobs = await Job.find(filter)
       .sort({ createdAt: -1 })
-      .populate("createdBy", "name email");
+      .populate("createdBy", "name");
 
     return res.status(200).json({
       message: "Jobs fetched successfully.",
@@ -112,12 +136,34 @@ const getJobById = async (req, res) => {
 };
 
 const getAdminJobs = async (req, res) => {
+  const { search } = req.query;
+  const filter = {
+    $or: [
+      {
+        title: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        company: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        location: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ],
+  };
+
   try {
     const jobs = await Job.aggregate([
       {
-        $match: {
-          createdBy: req.user._id,
-        },
+        $match: filter,
       },
       {
         $lookup: {
