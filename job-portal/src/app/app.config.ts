@@ -7,14 +7,16 @@ import { authInterceptor } from './core/interceptors/auth-interceptor';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { authReducer } from './features/auth/store/auth.reducer';
+import { AuthEffects } from './features/auth/store/auth.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
-    provideStore(),
-    provideEffects(),
+    provideStore({auth:authReducer}),
+    provideEffects([AuthEffects]),
     provideStoreDevtools(),
   ],
 };

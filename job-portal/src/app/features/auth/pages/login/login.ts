@@ -2,6 +2,9 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { login } from '../../store/auth.action';
+import { selectError, selectLoading } from '../../store/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -10,40 +13,24 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   styleUrl: './login.css',
 })
 export class Login {
-  private router = inject(Router);
-  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
 
+  private store = inject(Store);
+
+  loading$ = this.store.select(selectLoading)
+
+  error$ = this.store.select(selectError)
+  
+  
   loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
-
-  isLoading = false;
-
-  errorMessage!: string;
+  
   onSubmit() {
-    this.isLoading = true;
     if (this.loginForm.invalid) return;
-
-    this.authService.login(this.loginForm.getRawValue()).subscribe({
-      next: (response) => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-
-        if (response.user.role === 'admin') {
-          this.router.navigate(['/admin']);
-          this.isLoading = false;
-          return;
-        }
-
-        this.router.navigate(['/home']);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error(error);
-        this.isLoading = false;
-      },
-    });
+    
+    this.store.dispatch(login(this.loginForm.getRawValue()));
+    console.log(this.error$)
   }
 }
