@@ -29,11 +29,11 @@ const getDashboardStats = async (req, res) => {
           },
         },
       ]),
-      Application.aggregate([
-        { $unwind: "$skills" },
+      Job.aggregate([
+        { $unwind: "$skillsRequired" },
         {
           $group: {
-            _id: "$skills",
+            _id: "$skillsRequired",
             count: { $sum: 1 },
           },
         },

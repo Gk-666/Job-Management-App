@@ -20,7 +20,6 @@ export class MyApplications {
   errorMessage = '';
 
   ngOnInit(): void {
-    console.log('loading.....');
     this.loadApplications();
   }
 
@@ -29,12 +28,11 @@ export class MyApplications {
 
     this.applicationService.getMyApplications().subscribe({
       next: (response) => {
-        console.log(response);
         this.applications.set(response.applications);
         this.isLoading.set(false);
       },
       error: (error) => {
-        this.errorMessage = error.error.message || 'Failed to load component.';
+        this.errorMessage = error.error.message || 'Failed to load applications.';
         this.isLoading.set(false);
       },
     });

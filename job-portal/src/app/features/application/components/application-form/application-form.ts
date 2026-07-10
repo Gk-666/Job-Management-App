@@ -14,14 +14,14 @@ export class ApplicationForm {
   private applicationService = inject(ApplicationService);
   private route = inject(ActivatedRoute);
 
-  isLoading = signal(false)
+  isLoading = signal(false);
 
   applicationForm = this.fb.nonNullable.group({
     personalInfo: this.fb.nonNullable.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: [{ value: '', disabled: true }, Validators.required],
+      lastName: [{ value: '', disabled: true }, Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      mobileNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      mobileNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       gender: ['', Validators.required],
       currentLocation: ['', [Validators.required, Validators.maxLength(15)]],
     }),
@@ -36,14 +36,15 @@ export class ApplicationForm {
     }),
     applicationDetails: this.fb.nonNullable.group({
       coverLetter: ['', [Validators.required, Validators.maxLength(150)]],
+      terms: [false, Validators.required],
     }),
   });
 
   resumeFile: File | null = null;
 
-  ngOnInit():void {
+  ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    
+
     this.applicationForm.patchValue({
       personalInfo: {
         firstName: user.firstName,
@@ -57,29 +58,29 @@ export class ApplicationForm {
     return this.applicationForm.get('professionalInfo.skills') as FormArray;
   }
 
-  addSkill():void {
+  addSkill(): void {
     this.skills.push(this.fb.control('', Validators.required));
   }
 
-  removeSkill(index: number):void {
+  removeSkill(index: number): void {
     if (this.skills.length > 1) {
       this.skills.removeAt(index);
       return;
     }
   }
 
-  onSelectedFile(event: HTMLInputElement):void {
-    if (event.files?.length) {
-      this.resumeFile = event?.files[0];
+  onSelectedFile(inputResumeEvent: HTMLInputElement): void {
+    if (inputResumeEvent.files) {
+      this.resumeFile = inputResumeEvent.files[0];
     }
   }
 
-  onSubmit():void {
-    this.isLoading.set(true)
+  onSubmit(): void {
+    this.isLoading.set(true);
     if (this.applicationForm.invalid) {
       alert('Invalid Form details.');
       this.applicationForm.markAllAsTouched();
-      this.isLoading.set(false)
+      this.isLoading.set(false);
       return;
     }
 
@@ -105,22 +106,18 @@ export class ApplicationForm {
     if (this.resumeFile) {
       formData.append('resume', this.resumeFile);
     } else {
-      console.log('Resume field found empty.please upload your resume.');
-    }
-
-    console.log(this.applicationForm.getRawValue());
-
-    for (const pair of formData.entries()) {
-      console.log(pair);
+      console.log('Resume field found empty.please upload your resume!');
     }
 
     this.applicationService.applyForJob(jobId, formData).subscribe({
       next: (response) => {
         console.log(response.message);
         this.applicationForm.reset();
+        this.isLoading.set(false);
       },
       error: (error) => {
         console.error(error);
+        this.isLoading.set(false);
       },
     });
   }

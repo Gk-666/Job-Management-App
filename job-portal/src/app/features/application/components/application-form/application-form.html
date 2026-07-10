@@ -1,11 +1,11 @@
 <div class="min-h-screen bg-gray-100 py-10">
   <h1 class="text-center mb-4 font-bold text-3xl text-slate-700">Job Application Form</h1>
   <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-7">
-    <form [formGroup]="applicationForm" class="flex flex-col space-y-3">
+    <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="flex flex-col space-y-4">
       <h2 class="text-xl font-bold border-b pb-2">Personal info</h2>
       <section
         formGroupName="personalInfo"
-        class="personalInfo grid grid-cols-1 md:grid-cols-2 gap-4 space-y-3 font-medium text-gray-700 border border-gray-200 rounded-xl p-6 space-y-4"
+        class="personalInfo grid grid-cols-1 md:grid-cols-2 gap-4 font-medium text-gray-700 border border-gray-200 rounded-xl p-6 space-y-4"
       >
         <div class="flex flex-col gap-2">
           <label for="firstName">First Name : </label>
@@ -31,7 +31,7 @@
           <label for="mobileNumber">Mobile No : </label>
           <input
             class="border p-1 rounded-lg p-2"
-            type="text"
+            type="tel"
             id="mobileNumber"
             formControlName="mobileNumber"
             minlength="10"
@@ -40,7 +40,13 @@
         </div>
         <div class="flex flex-col gap-2">
           <label for="email">Email : </label>
-          <input class="border p-1 rounded-lg p-2" type="text" id="email" formControlName="email" readonly />
+          <input
+            class="border p-1 rounded-lg p-2"
+            type="email"
+            id="email"
+            formControlName="email"
+            readonly
+          />
         </div>
         <div class="flex gap-6 items-center">
           <label for="gender">Gender : </label>
@@ -71,12 +77,17 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="flex flex-col gap-2">
             <label for="">Qualification : </label>
-            <input class="border rounded-lg p-2" type="text" formControlName="qualification" />
+            <input
+              class="border rounded-lg p-2"
+              type="text"
+              formControlName="qualification"
+              autocomplete="on"
+            />
           </div>
           <div class="flex flex-col gap-2">
             <label for="exp">Experience : </label>
             <select name="" id="exp" class="border rounded-lg p-2" formControlName="experience">
-              <option value="fresher">Fresher</option>
+              <option value="Fresher">Fresher</option>
               <option value="1">1 yr</option>
               <option value="2">2 yrs</option>
               <option value="3">3 yrs</option>
@@ -85,19 +96,21 @@
             </select>
           </div>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-4">
           <label>Skills : </label>
           <div formArrayName="skills" class="grid grid-cols-3 gap-2 items-center">
             @for (control of skills.controls; track control) {
-              <div class="flex items-center gap-2 border rounded-lg p-2">
+              <div class="flex items-center justify-between border rounded-lg h-11 px-2 transition">
                 <input class="outline-none" maxlength="10" type="text" [formControlName]="$index" />
-                <button
-                  type="button"
-                  class="text-xl text-red-400 font-bold cursor-pointer"
-                  (click)="removeSkill($index)"
-                >
-                  &times;
-                </button>
+                @if (skills.length > 1) {
+                  <button
+                    type="button"
+                    class="text-xl text-red-400 font-bold cursor-pointer"
+                    (click)="removeSkill($index)"
+                  >
+                    &times;
+                  </button>
+                }
               </div>
             }
             <button
@@ -115,14 +128,14 @@
         formGroupName="preferences"
         class="preferences grid grid-cols-1 md:grid-cols-2 items-center gap-4 font-medium text-gray-700 border border-gray-200 rounded-xl p-6"
       >
-        <div class="flex gap-2 itmes-center">
+        <div class="flex gap-2 items-center">
           <label for="relocation">Willing to relocate ? </label>
           <input
             type="checkbox"
             id="relocation"
             formControlName="relocation"
             class="h-4 w-4 mt-1"
-          /> 
+          />
         </div>
         <div class="flex gap-4 w-fit items-center">
           <label for="">Work Mode : </label>
@@ -151,7 +164,7 @@
         formGroupName="applicationDetails"
       >
         <label class="flex flex-col gap-2" for="resume"
-          >Resume : <input type="file" class="border p-2" (input)="onSelectedFile($event.target)"
+          >Resume : <input type="file" class="border p-2" (change)="onSelectedFile($event.target)"
         /></label>
         <label class="flex flex-col gap-2" for="coverletter">
           Cover Letter :
@@ -164,14 +177,13 @@
           ></textarea>
         </label>
         <label for="terms"
-          ><input type="checkbox" id="terms" /> I, hereby consent that i have read and agreed to all
-          the terms and conditions written in the documents.</label
+          ><input type="checkbox" id="terms" formControlName="terms" /> I, hereby consent that i
+          have read and agreed to all the terms and conditions written in the documents.</label
         >
         <button
           type="submit"
           class="bg-purple-600 p-2 rounded-lg text-white focus:ring-2 focus:ring-purple-400 transition"
-          (click)="onSubmit()"
-          [disabled]="isLoading()"
+          [disabled]="applicationForm.invalid || isLoading()"
         >
           Submit
         </button>

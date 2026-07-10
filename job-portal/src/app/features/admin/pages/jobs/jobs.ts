@@ -36,7 +36,6 @@ export class Jobs {
   loadJobs(searchTerm = '') {
     this.jobService.getAdminJobs(searchTerm).subscribe({
       next: (response) => {
-        console.log(response);
         this.jobs.set(response.jobs);
         this.isLoading.set(false);
       },
