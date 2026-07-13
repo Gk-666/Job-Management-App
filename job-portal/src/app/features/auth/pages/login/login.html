@@ -71,11 +71,11 @@
         />
       </div>
 
-      <!-- Error -->
+      <!-- Errors -->
 
-      @if (error$) {
+      @if(loginForm.invalid && loginForm.dirty ){
         <p class="text-red-500 text-sm">
-          {{ error$ }}
+          Please enter valid details.
         </p>
       }
 

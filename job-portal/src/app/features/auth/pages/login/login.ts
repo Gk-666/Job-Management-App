@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
+import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { login } from '../../store/auth.action';
@@ -17,11 +16,8 @@ export class Login {
 
   private store = inject(Store);
 
-  loading$ = this.store.select(selectLoading)
+  loading = this.store.selectSignal(selectLoading)
 
-  error$ = this.store.select(selectError)
-  
-  
   loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
@@ -31,6 +27,5 @@ export class Login {
     if (this.loginForm.invalid) return;
     
     this.store.dispatch(login(this.loginForm.getRawValue()));
-    console.log(this.error$)
   }
 }
