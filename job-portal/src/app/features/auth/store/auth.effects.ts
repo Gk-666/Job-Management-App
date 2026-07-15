@@ -32,7 +32,10 @@ export class AuthEffects {
           map((res) => loginSuccess({ user: res.user })),
 
           catchError((error) => {
-            this.notification.error(error.error.message, 'Login Failed');
+            this.notification.error(
+              error.status === 0 ? "Can't reach server. Try again later." : error.error.meassage,
+              'Login Failed',
+            );
             return of(loginFailure({ error: error.error.message }));
           }),
         ),

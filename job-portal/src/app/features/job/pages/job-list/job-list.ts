@@ -5,6 +5,9 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { loadJobs } from '../../store/jobs.actions';
+import { selectJobs, selectJobsError, selectJobsLoading } from '../../store/jobs.selector';
 
 @Component({
   selector: 'app-job-list',
@@ -13,35 +16,15 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
   styleUrl: './job-list.css',
 })
 export class JobList {
-  private jobService = inject(JobService);
-  isLoading = false;
+  private store = inject(Store)
 
-  jobs: WritableSignal<Job[]> = signal([]);
+  jobs = this.store.selectSignal(selectJobs)
+
+  loading = this.store.selectSignal(selectJobsLoading)
 
   searchControl = new FormControl('', { nonNullable: true });
 
   ngOnInit() {
-    this.isLoading = true;
-    this.loadJobList('');
-    this.listenSearchControl();
-  }
-
-  listenSearchControl() {
-    this.searchControl.valueChanges
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((searchTerm) => this.loadJobList(searchTerm));
-  }
-
-  loadJobList(searchTerm: string) {
-    this.jobService.getJobs(searchTerm).subscribe({
-      next: (response) => {
-        this.jobs.set(response.jobs);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.log(error);
-        this.isLoading = false;
-      },
-    });
+    this.store.dispatch(loadJobs())
   }
 }

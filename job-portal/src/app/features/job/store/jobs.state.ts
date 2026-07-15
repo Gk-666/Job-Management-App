@@ -13,3 +13,4 @@ export const initialJobsState: JobsState = {
   loading: false,
   error: null,
 };
+
