@@ -93,7 +93,7 @@ const getAllJobs = async (req, res) => {
   try {
     const jobs = await Job.find(filter)
       .sort({ createdAt: -1 })
-      .populate("createdBy", "name");
+      // .populate("createdBy", "name");
 
     return res.status(200).json({
       message: "Jobs fetched successfully.",

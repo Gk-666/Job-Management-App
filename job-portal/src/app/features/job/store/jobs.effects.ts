@@ -14,8 +14,8 @@ export class JobsEffects {
     this.actions$.pipe(
       ofType(loadJobs),
 
-      exhaustMap(() =>
-        this.jobService.getJobs('').pipe(
+      exhaustMap(({searchTerm}) =>
+        this.jobService.getJobs(searchTerm).pipe(
           map((res) => loadJobsSuccess({ jobs: res.jobs })),
 
           catchError((res) => of(loadJobsFailure({ error: res.error.message }))),

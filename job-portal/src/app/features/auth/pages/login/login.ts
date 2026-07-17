@@ -16,16 +16,16 @@ export class Login {
 
   private store = inject(Store);
 
-  loading = this.store.selectSignal(selectLoading)
+  loading = this.store.selectSignal(selectLoading);
 
   loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
-  
+
   onSubmit() {
     if (this.loginForm.invalid) return;
-    
-    this.store.dispatch(login(this.loginForm.getRawValue()));
+
+    this.store.dispatch(login({ credentials: this.loginForm.getRawValue() }));
   }
 }
