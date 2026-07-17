@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { Store } from '@ngrx/store';
+import { logout } from '../../../auth/store/auth.action';
 
 @Component({
   selector: 'app-admin-sidebar',
@@ -9,17 +11,9 @@ import { AuthService } from '../../../../core/services/auth.service';
   styleUrl: './admin-sidebar.css',
 })
 export class AdminSidebar {
-  private authService = inject(AuthService);
-  private router = inject(Router);
+ private store = inject(Store)
 
-  isLoading = false;
-
-  logout() {
-    this.isLoading = true;
-    this.authService.logout();
-    setTimeout(() => {
-      this.router.navigate(['/login']);
-      this.isLoading = false;
-    }, 1000);
-  }
+ logout(){
+  this.store.dispatch(logout());
+ }
 }

@@ -34,6 +34,10 @@ export class AuthEffects {
             localStorage.setItem('token', res.token);
             localStorage.setItem('user', JSON.stringify(res.user));
             this.notification.success('Welcome back.', 'Login Successful');
+            if (res.user.role === 'admin') {
+              this.router.navigate(['/admin']);
+              return;
+            }
             this.router.navigate(['/home']);
           }),
 
@@ -41,7 +45,7 @@ export class AuthEffects {
 
           catchError((err) => {
             this.notification.error(
-              err.status === 0 ? "Can't reach server. Try again later." : err.error.meassage,
+              err.status === 0 ? "Can't reach server. Try again later." : err.error.message,
               'Login Failed',
             );
             return of(loginFailure({ error: err.error.message }));
@@ -61,7 +65,7 @@ export class AuthEffects {
           localStorage.removeItem('user');
 
           this.notification.info('Good Bye!', 'Logout successful');
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login']);  
         }),
       ),
     { dispatch: false },
@@ -73,6 +77,11 @@ export class AuthEffects {
 
       exhaustMap((registerRequest) =>
         this.authService.register(registerRequest.user).pipe(
+          tap((res) => {
+            this.notification.success('Please login now.', 'Registration Successful');
+            this.router.navigate(['/login']);
+          }),
+
           map((res) => registerSuccess({ user: res.user })),
 
           catchError((err) => {

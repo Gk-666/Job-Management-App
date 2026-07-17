@@ -7,7 +7,6 @@ export const loadJobsSuccess = createAction('[Jobs] Load Jobs Success', props<{ 
 
 export const loadJobsFailure = createAction('[Jobs] Load Jobs Failure', props<{ error: string }>());
 
-
 export const loadAdminJobs = createAction(
   '[Jobs] Load Admin Jobs',
   props<{ searchTerm: string }>(),
@@ -22,7 +21,6 @@ export const loadAdminJobsFailure = createAction(
   '[Jobs] Load Admin Jobs Failure',
   props<{ error: string }>(),
 );
-
 
 export const createJob = createAction('[Jobs] Create Job', props<Job>());
 

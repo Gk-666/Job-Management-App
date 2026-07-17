@@ -28,7 +28,7 @@
         }
       </div>
 
-      <form [formGroup]="registerForm" class="space-y-5">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
         <div class="grid grid-cols-2 gap-2">
           <!-- Name -->
 
@@ -97,22 +97,18 @@
           </div>
         </div>
 
-        @if (errorMessage || registerForm.errors) {
-          <p class="text-red-500 text-sm">
-            {{ errorMessage }}
-          </p>
+        @if (password?.hasError('minlength')) {
+          <p class="text-red-500 text-sm">Password should have at least 6 characters.</p>
         }
-        @if(registerForm.hasError('minlength') && registerForm.get('password')?.touched){
-          <p class="text-red-500 text-sm">
-            Password should have at least 6 characters.
-          </p>
+
+        @if (password?.value !== confirmPassword?.value && confirmPassword?.dirty) {
+          <p class="text-red-500 text-sm">Confirm password do not match with the password.</p>
         }
         <!-- Button -->
 
         <button
           type="submit"
           class="w-full rounded-xl bg-gradient-to-r from-purple-600 to-violet-600 py-3 font-semibold text-white hover:shadow-xl hover:scale-[1.02] transition"
-          (click)="onSubmit()"
         >
           Create Account
         </button>

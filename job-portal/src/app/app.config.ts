@@ -12,6 +12,7 @@ import { AuthEffects } from './features/auth/store/auth.effects';
 import { provideToastr } from 'ngx-toastr';
 import { jobReducer } from './features/job/store/jobs.reducer';
 import { JobsEffects } from './features/job/store/jobs.effects';
+import { applicationReducer } from './features/application/store/applications.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideState('auth', authReducer),
     provideState('jobs', jobReducer),
+    provideState('applications', applicationReducer),
     provideEffects([AuthEffects, JobsEffects]),
     provideStoreDevtools(),
     provideToastr({

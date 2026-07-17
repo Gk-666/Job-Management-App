@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { Store, StoreRootModule } from '@ngrx/store';
+import { register } from '../../store/auth.action';
 
 @Component({
   selector: 'app-register',
@@ -11,8 +13,8 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class Register {
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private router = inject(Router);
+
+  private store = inject(Store);
 
   registerForm = this.fb.nonNullable.group({
     firstName: ['', [Validators.required]],
@@ -22,31 +24,17 @@ export class Register {
     confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  errorMessage = '';
+  get password() {
+    return this.registerForm.get('password');
+  }
+
+  get confirmPassword() {
+    return this.registerForm.get('confirmPassword');
+  }
 
   onSubmit() {
-    if (this.registerForm.invalid){
-      this.errorMessage = 'Please enter valid information.'
-      return;
-    } else{
-      this.errorMessage = ''
-    }
+    if (this.registerForm.invalid || this.password?.value !== this.confirmPassword?.value) return;
 
-    if (
-      this.registerForm.get('password')?.value !== this.registerForm.get('confirmPassword')?.value
-    ) {
-      this.errorMessage = 'Confirm password & password do not match !';
-      return;
-    }
-
-    console.log(this.registerForm.getRawValue());
-    this.authService.register(this.registerForm.getRawValue()).subscribe({
-      next: (response) => {
-        this.router.navigate(['/login']);
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    this.store.dispatch(register({ user: this.registerForm.getRawValue() }));
   }
 }
