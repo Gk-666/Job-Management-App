@@ -2,7 +2,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { loadJobs, loadJobsFailure, loadJobsSuccess } from './jobs.actions';
 import { inject, Injectable } from '@angular/core';
 import { JobService } from '../../../core/services/job.service';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 
 @Injectable()
 export class JobsEffects {
@@ -14,7 +14,7 @@ export class JobsEffects {
     this.actions$.pipe(
       ofType(loadJobs),
 
-      exhaustMap(({searchTerm}) =>
+      switchMap(({searchTerm}) =>
         this.jobService.getJobs(searchTerm).pipe(
           map((res) => loadJobsSuccess({ jobs: res.jobs })),
 

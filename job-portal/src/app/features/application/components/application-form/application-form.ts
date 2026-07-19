@@ -14,8 +14,6 @@ export class ApplicationForm {
   private applicationService = inject(ApplicationService);
   private route = inject(ActivatedRoute);
 
-  isLoading = signal(false);
-
   applicationForm = this.fb.nonNullable.group({
     personalInfo: this.fb.nonNullable.group({
       firstName: [{ value: '', disabled: true }, Validators.required],
@@ -76,11 +74,9 @@ export class ApplicationForm {
   }
 
   onSubmit(): void {
-    this.isLoading.set(true);
     if (this.applicationForm.invalid) {
       alert('Invalid Form details.');
       this.applicationForm.markAllAsTouched();
-      this.isLoading.set(false);
       return;
     }
 
@@ -102,23 +98,21 @@ export class ApplicationForm {
     formData.append('relocation', String(formValue.preferences.relocation));
     formData.append('workMode', formValue.preferences.workMode);
     formData.append('coverLetter', formValue.applicationDetails.coverLetter);
-
+    
     if (this.resumeFile) {
       formData.append('resume', this.resumeFile);
     } else {
-      console.log('Resume field found empty.please upload your resume!');
+      alert('Resume field found empty.please upload your resume!');
     }
 
     this.applicationService.applyForJob(jobId, formData).subscribe({
       next: (response) => {
         console.log(response.message);
         this.applicationForm.reset();
-        this.isLoading.set(false);
       },
       error: (error) => {
         console.error(error);
-        this.isLoading.set(false);
-      },
+       },
     });
   }
 }

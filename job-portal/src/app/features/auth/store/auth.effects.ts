@@ -55,8 +55,7 @@ export class AuthEffects {
     ),
   );
 
-  logout$ = createEffect(
-    () =>
+  logout$ = createEffect(() =>
       this.actions$.pipe(
         ofType(logout),
 
@@ -65,7 +64,7 @@ export class AuthEffects {
           localStorage.removeItem('user');
 
           this.notification.info('Good Bye!', 'Logout successful');
-          this.router.navigate(['/login']);  
+          this.router.navigate(['/login']);
         }),
       ),
     { dispatch: false },
