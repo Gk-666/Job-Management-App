@@ -19,7 +19,7 @@ import {
   viewApplicationDetailsFailure,
   viewApplicationDetailsSuccess,
 } from './applications.actions';
-import { catchError, exhaustAll, exhaustMap, map, of, tap } from 'rxjs';
+import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Injectable()
@@ -39,7 +39,10 @@ export class ApplicationsEffects {
       exhaustMap(() =>
         this.applicationService.getMyApplications().pipe(
           map((res) => loadApplicationsSuccess({ applications: res.applications })),
-          catchError((err) => of(loadApplicationsFailure({ error: err.error.message }))),
+          
+          catchError((err) => {
+           this.notification.error(err.error.message) 
+           return of(loadApplicationsFailure({ error: err.error.message }))}),
         ),
       ),
     ),

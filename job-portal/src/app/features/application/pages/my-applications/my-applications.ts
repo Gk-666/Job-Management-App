@@ -3,6 +3,9 @@ import { Application } from '../../../../core/models/application.model';
 import { ApplicationService } from '../../../../core/services/application.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selecApplicationsError, selectApplications, selectApplicationsLoading } from '../../store/applications.selector';
+import { loadApplications } from '../../store/applications.actions';
 
 @Component({
   selector: 'app-my-applications',
@@ -11,30 +14,15 @@ import { RouterLink } from '@angular/router';
   styleUrl: './my-applications.css',
 })
 export class MyApplications {
-  private applicationService = inject(ApplicationService);
+  private store = inject(Store);
+  
+  applications = this.store.selectSignal(selectApplications)
 
-  applications: WritableSignal<Application[]> = signal([]);
+  loading = this.store.selectSignal(selectApplicationsLoading)
 
-  isLoading = signal(false);
-
-  errorMessage = '';
+  error = this.store.selectSignal(selecApplicationsError)
 
   ngOnInit(): void {
-    this.loadApplications();
-  }
-
-  loadApplications() {
-    this.isLoading.set(true);
-
-    this.applicationService.getMyApplications().subscribe({
-      next: (response) => {
-        this.applications.set(response.applications);
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        this.errorMessage = error.error.message || 'Failed to load applications.';
-        this.isLoading.set(false);
-      },
-    });
+    this.store.dispatch(loadApplications())
   }
 }

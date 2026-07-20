@@ -13,6 +13,7 @@ import { provideToastr } from 'ngx-toastr';
 import { jobReducer } from './features/job/store/jobs.reducer';
 import { JobsEffects } from './features/job/store/jobs.effects';
 import { applicationReducer } from './features/application/store/applications.reducer';
+import { ApplicationsEffects } from './features/application/store/applications.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,7 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideState('auth', authReducer),
     provideState('jobs', jobReducer),
     provideState('applications', applicationReducer),
-    provideEffects([AuthEffects, JobsEffects]),
+    provideEffects([AuthEffects, JobsEffects, ApplicationsEffects]),
     provideStoreDevtools(),
     provideToastr({
       positionClass: 'toast-top-right',

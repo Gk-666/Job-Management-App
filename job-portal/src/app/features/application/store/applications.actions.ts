@@ -2,11 +2,11 @@ import { createAction, props } from '@ngrx/store';
 import { Application } from '../../../core/models/application.model';
 
 
-export const loadApplications = createAction('[Applications] Load Application ');
+export const loadApplications = createAction('[Applications] Load Applications');
 
-export const loadApplicationsSuccess = createAction('[Applications] Load Application Success', props<{ applications: Application[] }>());
+export const loadApplicationsSuccess = createAction('[Applications] Load Applications Success', props<{ applications: Application[] }>());
 
-export const loadApplicationsFailure = createAction('[Applications] Load Application Failure', props<{ error: string }>());
+export const loadApplicationsFailure = createAction('[Applications] Load Applications Failure', props<{ error: string }>());
 
 
 export const createApplication = createAction('[Applications] create Application', props<{ jobId: string, application: FormData }>());
@@ -32,6 +32,6 @@ export const loadJobApplicationsFailure = createAction('[Applications] Load Job 
 
 export const updateApplicationStatus = createAction('[Applicatons] Update Appplication Status', props<{ applicationId: string, status: string}>())
 
-export const updateApplicationStatusSuccess = createAction('[Appliatios] Update Application Status Success')
+export const updateApplicationStatusSuccess = createAction('[Appliatios] Update Application Status Success',props<{ updatedApplication: Application }>())
 
 export const updateApplicationStatusFailure = createAction('[Applications] Update Applications Status Failure',props<{ error: string }>())

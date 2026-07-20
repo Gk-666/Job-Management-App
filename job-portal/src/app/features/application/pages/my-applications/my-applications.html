@@ -2,13 +2,13 @@
   <div class="min-w-5xl mx-auto px-8">
     <h1 class="text-3xl font-bold text-left mb-8">My Applications</h1>
 
-    @if (isLoading()) {
+    @if (loading()) {
       <div class="text-center text-gray-600">Loading applications...</div>
     }
 
-    @if (errorMessage) {
+    @if (error()) {
       <div class="bg-red-100 border border-red-300 text-red-700 p-4 rounded-lg text-center">
-        {{ errorMessage }}
+        {{ error()}}
       </div>
     }
 
